@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html ng-app="starter">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title></title>
+
+    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+        <link href="css/jr-crop.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/fullcalendar.css">
+        <link href="css/ng-img-crop.css" rel="stylesheet">
+    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+    <link href="css/ionic.app.css" rel="stylesheet">
+    -->
+    <!-- ionic/angularjs js -->
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/moment.min.js"></script>
+	<script type="text/javascript" src="lib/ionic/js/ionic.bundle.js"></script>
+	<script type="text/javascript" src="js/Chart.js"></script>
+	<script type="text/javascript" src="js/angular-chart.min.js"></script>
+	<script type="text/javascript" src="js/ng-img-crop.js"></script>
+   
+   <!-- cordova script (this will be a 404 during development) -->
+    <script src="cordova.js"></script>
+	
+	<!--service js -->
+	<script src="js/service.js"></script>
+	<script src="js/service/acraEData.js"></script>
+	<script src="js/service/compData.js"></script>
+	<script src="js/service/contactList.js"></script>
+	<script src="js/service/businessData.js"></script>
+	<script src="js/service/accType.js"></script>
+	<script src="js/service/priceData.js"></script>
+	<script src="js/service/addedService.js"></script>
+	<script src="js/service/addedCardData.js"></script>	
+	<script src="js/service/icData.js"></script>	
+	
+    <!-- controller js -->
+    <script src="js/controllers.js"></script>
+	<script src="js/controller/menuCtrl.js"></script>
+	<script src="js/controller/homeCtrl.js"></script>
+	<script src="js/controller/acraDetailsCtrl.js"></script>
+	<script src="js/controller/receivedAcraCtrl.js"></script>
+	<script src="js/controller/cameraCtrl.js"></script>
+	<script src="js/controller/detailCtrl.js"></script>
+	<script src="js/controller/signCtrl.js"></script>
+	<script src="js/controller/serviceCtrl.js"></script>
+	<script src="js/controller/accountSummaryCtrl.js"></script>
+	<script src="js/controller/applicationSummaryCtrl.js"></script>
+	<script src="js/controller/contactPersonCtrl.js"></script>
+	<script src="js/controller/imagePickerCtrl.js"></script>
+	<script src="js/controller/appointmentCtrl.js"></script>
+	<script src="js/controller/trackerHistoryCtrl.js"></script>
+	<script src="js/controller/trackerCtrl.js"></script>
+    
+	<!--app js -->
+	<script src="js/app.js"></script>
+	
+	<!--external library js -->
+    <script src="js/ng-cordova.min.js"></script>
+    <script src="js/angular-messages.min.js"></script>
+	
+    <script src="js/signature_pad.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/jr-crop.js"></script>
+	
+	<script type="text/javascript" src="js/calendar.js"></script>
+	<script type="text/javascript" src="js/fullcalendar.min.js"></script>
+	<script type="text/javascript" src="js/gcal.js"></script>
+	<script src="js/jspdf.min.js"></script>
+  </head>
+  
+  <body>
+    <!--
+      The nav bar that will be updated as we navigate between views.
+    -->
+    <!--
+    <ion-nav-bar class="bar-stable">
+      <ion-nav-back-button>
+      </ion-nav-back-button>
+    </ion-nav-bar>
+    <!--
+      The views will be rendered in the <ion-nav-view> directive below
+      Templates are in the /templates folder (but you could also
+      have templates inline in this html file if you'd like).
+    -->
+    <ion-nav-view></ion-nav-view>
+  </body>
+</html>

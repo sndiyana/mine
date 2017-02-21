@@ -1,0 +1,35 @@
+<ion-view>
+    <ion-header-bar class="bar-assertive">
+             <!--h1 class="title">OCBC Corporate Account</h1-->
+    </ion-header-bar>
+
+    <ion-content padding="true">
+        <div class="login-logo" ng-controller="HomeCtrl">
+            <center>
+                <img src="img/OCBC_Logo.png" align="middle" width="50%" height="auto" >
+            </center>
+              
+        </div>
+        
+        <div class="input-login">
+            <div class="card">
+                <img src="img/icons/ios7-person.png" align="left" class="icon-login" width="15%" height:auto>
+                <input type="text" name="id" placeholder="ID" ng-model="data.id" style="font-size:15px;padding-top:26px;padding-left:10px" required>
+            </div>
+            <!--div class="card">
+                <img src="img/icons/ios7-locked.png" align="left" class="icon-login" width="15%" height:auto>
+                <input type="password" name="password" placeholder="Password" ng-model="data.password" style="font-size:15px;padding-top:26px;padding-left:10px;padding-bottom:30px" required>
+            </div-->
+        </div>
+        
+        <div class="login-button">
+        <center>
+            <button style="padding-left:20px;padding-right:20px" class="button button-large button-assertive" ng-click="login()"><b>Login</b></button>
+        </center>
+        </div>
+        
+    </ion-content>
+    <div class="bar bar-footer bar-assertive">
+    </div>
+</ion-view>
+

@@ -1,0 +1,93 @@
+ <ion-modal-view>
+        <ion-header-bar class="bar bar-header bar-assertive">
+          <h1 class="title">Add Contact Person</h1>
+          <button class="button button-clear button-primary" ng-click="closeModal2()">Cancel</button>
+        </ion-header-bar>
+        <ion-content class="padding">
+        <form name="addContactForm" novalidate="">
+          <div class="list">
+            <label class="item item-input" ng-class="{ 'has-errors' : addContactForm.name.$invalid, 'no-errors' : addContactForm.name.$valid}">
+              <span class="input-label">Name</span>
+              <input ng-model="addContact.name" name="name" placeholder= "{{addContact.name}}" type="text" required>
+            </label>
+            <div class="error-container" ng-show="addContactForm.name.$error" ng-messages ="addContactForm.name.$error">
+                <div ng-messages-include="templates/error-list.html"></div>
+            </div>  
+           
+            <label class="item item-input" ng-class="{ 'has-errors' : addContactForm.ic.$invalid, 'no-errors' : addContactForm.ic.$valid}">
+              <span class="input-label">IC Number</span>
+              <input ng-model="addContact.ic" name="ic" placeholder= "{{addContact.ic}}" type="text" required>
+            </label>
+            <div class="error-container" ng-show="addContactForm.ic.$error" ng-messages ="addContactForm.ic.$error">
+                <div ng-messages-include="templates/error-list.html"></div>
+            </div> 
+              
+            <label class="item item-input item-select" ng-class="{ 'has-errors' : addContactForm.gender.$invalid, 'no-errors' : addContactForm.gender.$valid}">
+              <span class="input-label">Gender</span>
+              <select ng-model="addContact.gender" name="gender"  placeholder= "{{addContact.gender}}" required>
+                    <option selected>-----------------------------</option>
+                    <option>Female</option>
+                    <option>Male</option>
+              </select>
+              <!--<input ng-model="user.gender" placeholder= "{{userSelected.dob}}" type="radio">-->
+            </label>
+            <div class="error-container" ng-show="addContactForm.gender.$error" ng-messages ="addContactForm.gender.$error">
+                <div ng-messages-include="templates/error-list.html"></div>
+            </div> 
+            
+            <label class="item item-input" ng-class="{ 'has-errors' : addContactForm.address.$invalid, 'no-errors' : addContactForm.address.$valid}">
+              <span class="input-label">Address</span>
+              <input ng-model="addContact.address" name="address" placeholder= "{{addContact.address}}" type="text" required>
+  <!--            <span class="input-label">Postal</span>
+              <input ng-model="addContact.postal" name="address" placeholder= "{{addContact.postal}}" type="number" required> -->
+            </label>
+              
+            <div class="error-container" ng-show="addContactForm.address.$error" ng-messages ="addContactForm.address.$error">
+                <div ng-messages-include="templates/error-list.html"></div>
+            </div>    
+             
+            <label class="item item-input"ng-class="{ 'has-errors' : addContactForm.position.$invalid, 'no-errors' : addContactForm.position.$valid}">
+              <span class="input-label">Position</span>
+              <input ng-model="addContact.position" name="position" placeholder= "{{addContact.position}}" type="text" required>
+            </label>
+            <div class="error-container" ng-show="addContactForm.position.$error" ng-messages ="addContactForm.position.$error">
+                <div ng-messages-include="templates/error-list.html"></div>
+            </div> 
+              
+            <label class="item item-input" ng-class="{ 'has-errors' : addContactForm.citizenship.$invalid, 'no-errors' : addContactForm.citizenship.$valid}">
+              <div class="input-label">Citizenship</div>
+              <input ng-model="addContact.citizenship" name="citizenship" placeholder= "{{addContact.citizenship}}" type="text" required>
+            </label>
+            <div class="error-container" ng-show="addContactForm.citizenship.$error" ng-messages ="addContactForm.citizenship.$error">
+                <div ng-messages-include="templates/error-list.html"></div>
+            </div> 
+              
+            <label class="item item-input" ng-class="{ 'has-errors' : addContactForm.dob.$invalid, 'no-errors' : addContactForm.dob.$valid}">
+              <span class="input-label">Date of Birth</span>
+              <input ng-model="addContact.dob" name="dob" placeholder= "{{addContact.dob}}" type="date" required>
+            </label>
+            <div class="error-container" ng-show="addContactForm.dob.$error" ng-messages ="addContactForm.dob.$error">
+                <div ng-messages-include="templates/error-list.html"></div>
+            </div> 
+              
+            <label class="item item-input" ng-class="{ 'has-errors' : addContactForm.contact_no.$invalid, 'no-errors' : addContactForm.contact_no.$valid}">
+              <span class="input-label">Contact Number</span>
+              <input ng-model="addContact.contact_no" name="contact_no" placeholder= "{{addContact.contact_no}}" type="number" required>
+            </label>
+            <div class="error-container" ng-show="addContactForm.contact_no.$error" ng-messages ="addContactForm.contact_no.$error">
+                <div ng-messages-include="templates/error-list.html"></div>
+            </div> 
+              
+            <label class="item item-input" ng-class="{ 'has-errors' : addContactForm.email.$invalid, 'no-errors' : addContactForm.email.$valid}">
+              <span class="input-label">Email</span>
+              <input ng-model="addContact.email" name="email" placeholder= "{{addContact.email}}" type="email" required>
+            </label>
+            <div class="error-container" ng-show="addContactForm.email.$error" ng-messages ="addContactForm.email.$error">
+                <div ng-messages-include="templates/error-list.html"></div>
+            </div> 
+             
+            <button class="button button-full button-assertive" ng-click="addContactRecord(addContactForm)">Save</button>
+          </div>
+        </form>
+        </ion-content>
+</ion-modal-view>

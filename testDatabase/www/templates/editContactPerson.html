@@ -1,0 +1,63 @@
+ <ion-modal-view>
+     
+        <ion-header-bar class="bar bar-header bar-assertive">
+          <h1 class="title">Edit Contact Person Details</h1>
+          <button class="button button-clear button-primary" ng-click="closeModal()">Cancel</button>
+        </ion-header-bar>
+        
+        <ion-content class="padding">
+            <div>
+                <div><center><img ng-src="{{icImg}}" /></center></div>
+            </div>
+          <div class="list">
+            <label class="item item-input">
+              <span class="input-label">Name</span>
+              <input ng-model="contactPerson.name" type="text">
+            </label>
+          
+            <label class="item item-input">
+              <span class="input-label">IC Number</span>
+              <input ng-model="contactPerson.IC" type="text">
+            </label>
+              
+            <label class="item item-input item-select">
+              <span class="input-label">Gender</span>
+              <select ng-model="contactPerson.gender"  id="selectGender">
+                    <option value="" selected disabled>-----------------------------</option>
+                    <option value="F">Female</option>
+                    <option value="M">Male</option>
+              </select> 
+              
+              <!--<input ng-model="user.gender" placeholder= "{{userSelected.dob}}" type="radio">-->
+            </label>  
+            <label class="item item-input">
+              <span class="input-label">Position</span>
+              <input ng-model="contactPerson.position" type="text">
+            </label>
+            <label class="item item-input">
+              <div class="input-label">Citizenship</div>
+              <input ng-model="contactPerson.citizenship" type="text">
+            </label>
+            <label class="item item-input">
+              <span class="input-label">Date of Birth</span>
+              <input ng-model="contactPerson.dob" type="text" onfocus="(this.type='date')">
+            </label>
+            <label class="item item-input">
+              <span class="input-label">Contact Number</span>
+              <input ng-model="contactPerson.contact_no" type="number">
+            </label> 
+            <label class="item item-input">
+              <span class="input-label">Address</span>
+              <input ng-model="contactPerson.address"  type="text">
+            </label>   
+              
+            <label class="item item-input">
+              <span class="input-label">Email</span>
+              <input ng-model="contactPerson.email" type="email">
+            </label>
+             
+            <button class="button button-full button-assertive" ng-click="editRecord(contactPerson,contactSelected.IC)">Save</button>
+          </div>
+        </ion-content>
+        
+</ion-modal-view>

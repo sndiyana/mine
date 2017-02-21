@@ -1,0 +1,135 @@
+<ion-view>
+        <ion-header-bar class="bar-assertive">
+            <h1 class="title">Business Details</h1>
+        </ion-header-bar>
+        <ion-content>
+            <div ng-controller="detailCtrl">
+             <div class="card">
+                 <div class = "item item-text-wrap">
+                    Please provide us information on your suppliers and customers to understand more about your business
+                 </div>
+             </div>
+           
+          <h1> <u>Suppliers </u></h1>
+             <form ng-submit="businessDetails()">
+                
+               <table style="text-align:center"> 
+                <!--div class="list"-->
+
+              <!--label class="item item-input item-select"-->
+              <tr>
+                <td style="padding-left:10px; padding-bottom:5px">   Country of purchase </td>
+               <td style="padding-left:10px; padding-bottom:5px">
+                <select ng-model="data.sCountry">
+                  <option value="SG" selected>Singapore</option>
+                  <option value="MY">Malaysia</option>
+                  <option value="ID" >Indonesia</option>
+                </select>
+              <!--/label-->
+            </td>
+            <!--/div-->
+          </tr>
+             
+             <!--label class="item item-input item-stacked-label"-->
+              <tr>
+                <td style="padding-left:10px; padding-bottom:5px">Payment Method</td>
+               <td style="padding-left:10px; padding-bottom:5px"> <input type="text" name="payment1" placeholder="eg Cheque" ng-model="data.sPayment">
+               </td>
+              </tr>
+
+
+               <!--div class="list1"-->
+
+              <!--label class="item item-input item-select"-->
+              <tr>
+                <td style="padding-left:10px; padding-bottom:5px">  Yearly average No. of payment</td>
+               <td style="padding-left:10px; padding-bottom:5px">
+                <select ng-model="data.sNumPayment">
+                  <option value="< 20"selected>0-20</option>
+                  <option value="20-40">20-40</option>
+                  <option value="40-60">40-60</option>
+                </select>
+              <!--/label-->
+            </td>
+            <!--/div-->
+          </tr>
+
+
+              <tr>
+                <td style="padding-left:10px; padding-bottom:5px">Average transaction size</td>
+               <td style="padding-left:10px; padding-bottom:5px"> <input type="text" name="transaction1" placeholder="$" ng-model="data.sTransaction">
+               </td>
+              </tr>
+
+
+
+            </table> 
+
+            <h1> <u>Customers </u></h1>
+          
+
+          <table style="text-align:center"> 
+
+               <!--div class="list3"-->
+
+              <!--label class="item item-input item-select"-->
+              <tr>
+                <td style="padding-left:10px; padding-bottom:5px">   Country of sale </td>
+               <td style="padding-left:10px; padding-bottom:5px">
+                <select ng-model="data.cCountry">
+                  <option value="SG" selected>Singapore</option>
+                  <option value="MY">Malaysia</option>
+                  <option value="ID">Indonesia</option>
+                </select>
+              <!--/label-->
+            </td>
+            <!--/div-->
+          </tr>
+            
+
+          <!--label class="item item-input item-stacked-label"-->
+              <tr>
+                <td style="padding-left:10px; padding-bottom:5px">Purchase Method</td>
+               <td style="padding-left:10px; padding-bottom:5px"> <input type="text" name="payment" placeholder="eg Cheque" ng-model="data.cPayment"> 
+               </td>
+              </tr>
+
+
+               <!--div class="list4"-->
+
+              <!--label class="item item-input item-select"-->
+              <tr>
+                <td style="padding-left:10px; padding-bottom:5px">  Yearly average No. of purchase</td>
+               <td style="padding-left:10px; padding-bottom:5px">
+                <select ng-model="data.cNumPayment">
+                  <option value="< 20" selected>0-20</option>
+                  <option value="20-40">20-40</option>
+                  <option value="40-60">40-60</option>
+                </select>
+              <!--/label-->
+            </td>
+            <!--/div-->
+          </tr>
+
+
+
+
+              <tr>
+                <td style="padding-left:10px; padding-bottom:5px">Average transaction size</td>
+               <td style="padding-left:10px; padding-bottom:5px"> <input type="text" name="transaction" placeholder="$" ng-model="data.cTransaction">
+               </td>
+              </tr>
+
+                </table>
+
+
+               <input type="submit" class="button button-assertive fab-right" value="Submit">
+                 <button class="button button-calm fab-right ">Save & Exit</button>
+
+            <!--/label-->
+                
+        </form>  
+				<input  class="button button-stable fab-left" type="submit" name="submit" value="<<" ng-click="backTwo()">
+            </div>
+    </ion-content>
+</ion-view>

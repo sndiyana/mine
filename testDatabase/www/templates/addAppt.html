@@ -1,0 +1,87 @@
+ <script>
+ var start= $("#start").value();
+  alert(start);
+
+ </script>
+ <ion-modal-view>
+        <ion-header-bar class="bar bar-header bar-assertive">
+          <h1 class="title">Add New Appointment</h1>
+          <button class="button button-clear button-primary" ng-click="closeModal()">Cancel</button>
+        </ion-header-bar>
+        <ion-content class="padding">
+         <form name="addApptForm" novalidate="">	
+          <div class="list">
+          
+          <label class="item item-input" ng-class="{ 'has-errors' : addApptForm.title.$invalid, 'no-errors' : addApptForm.title.$valid}">
+              <span class="input-label">Title</span>
+              <input ng-model="appt.title"  name="title" type="text" required>
+            </label>
+           <div class="error-container" ng-show="addApptForm.title.$error" ng-messages ="addApptForm.title.$error">
+                <div ng-messages-include="templates/error-list.html"></div>
+            </div>  
+            
+            <p>Add Contact from Contact List <i class="icon ion-ios-plus placeholder-icon"  ng-click="getContact()"> </i> </p>
+            <label class="item item-input" ng-class="{ 'has-errors' : addApptForm.name.$invalid, 'no-errors' : addApptForm.name.$valid}">
+              <span class="input-label">Client Name</span>
+              <input ng-model="contact.name"  placeholder="{{contact.name}}" name="name" type="text" required >
+            </label>
+             <div class="error-container" ng-show="addApptForm.name.$error" ng-messages ="addApptForm.name.$error">
+                <div ng-messages-include="templates/error-list.html"></div>
+            </div> 
+            
+             <label class="item item-input" ng-class="{ 'has-errors' : addApptForm.contactnumber.$invalid, 'no-errors' : addApptForm.contactnumber.$valid}">
+              <span class="input-label">Contact Number</span>
+              <input ng-model="contact.number"  placeholder="{{contact.number}}" name="contactnumber" type="tel" required>
+            </label>
+            	<div class="error-container" ng-show="addApptForm.contactnumber.$error" ng-messages ="addApptForm.contactnumber.$error">
+                <div ng-messages-include="templates/error-list.html"></div>
+            </div> 
+            
+           <label class="item item-input" ng-class="{ 'has-errors' : addApptForm.email.$invalid, 'no-errors' : addApptForm.email.$valid}">
+              <span class="input-label">Email</span>
+              <input ng-model="contact.email" placeholder="{{contact.email}}" type="email" name="email"  ng-model="data.email" required>
+            </label>
+           <div class="error-container" ng-show="addApptForm.email.$error" ng-messages ="addApptForm.email.$error">
+                <div ng-messages-include="templates/error-list.html"></div>
+            </div> 
+           		
+             <label class="item item-input" ng-class="{ 'has-errors' : addApptForm.start.$invalid, 'no-errors' : addApptForm.start.$valid}">
+              <span class="input-label">Start</span>
+            <input ng-model="appt.start" ng-change="change()" name="start" type="datetime-local" required >
+              <!--<ion-datetime displayFormat="yyyy-MM-ddTHH:mm:ss" [(ngModel)]="appt.start"></ion-datetime>-->
+            </label>
+            <div class="error-container" ng-show="addApptForm.start.$error" ng-messages ="addApptForm.start.$error">
+                <div ng-messages-include="templates/error-list.html"></div>
+            </div> 
+            
+            
+             <label class="item item-input" placeholder="{{appt.end}}" ng-class="{ 'has-errors' : addApptForm.end.$invalid, 'no-errors' : addApptForm.end.$valid}">
+              <span class="input-label">End</span>
+              <input ng-model="appt.end"  name="end"  type="datetime-local" required>
+            </label>
+            <div class="error-container" ng-show="addApptForm.end.$error" ng-messages ="addApptForm.end.$error">
+                <div ng-messages-include="templates/error-list.html"></div>
+            </div> 
+            
+           
+            <label class="item item-input" ng-class="{ 'has-errors' : addApptForm.venue.$invalid, 'no-errors' : addApptForm.venue.$valid}">
+              <span class="input-label">Venue</span>
+              <input ng-model="appt.venue" name="venue" type="text" required >
+            </label>
+             <div class="error-container" ng-show="addApptForm.venue.$error" ng-messages ="addApptForm.venue.$error">
+                <div ng-messages-include="templates/error-list.html"></div>
+            </div> 
+             
+             
+            <label class="item item-input">
+              <span class="input-label">Remarks</span>
+              <input ng-model="appt.remark" type="text">
+            </label>
+            
+             
+             
+            <button class="button button-full button-assertive" ng-disabled="addApptForm.$invalid"   ng-click="addAppt(appt,contact)">Save</button>
+          </div>
+          </form>
+        </ion-content>
+</ion-modal-view>

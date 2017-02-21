@@ -1,0 +1,77 @@
+<ion-side-menus enable-menu-with-back-views="false">
+  <ion-side-menu-content>
+    <ion-nav-bar align-title="center" class="bar-assertive">
+      <ion-nav-back-button>
+      </ion-nav-back-button>
+       
+      <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+        </button>
+        
+        <div class="title">
+        <div class="spacer" style="height: 5px;"></div>
+              <img src="img/ocbc-logo.png" alt="" width="20%" height="auto">
+        </div>
+                  <!--
+          <div align-title="right" class="buttons" style="padding-bottom:20px">
+           <button class="button button-outline button-light" ng-click="logout()"><i class="icon ion-person"></i>Logout</button>
+            </div>-->
+      </ion-nav-buttons>
+    </ion-nav-bar>
+    
+    <ion-content>
+     <center>  <div style="padding-top:80px"> <img src="img/bu.png" alt="" width="20%" height="auto"></div><br>
+           <div style="font-size:22px"> <b>Congratulations, your business account has been set up!</b></div><br><br>
+            <div style="font-size:26px">OCBC Banking</div><br>
+            <div style="font-size:26px"><b>529-128450-001</b></div><br>
+            
+            <table>
+                <tr>
+                    <td> Internet Banking </td>
+                    <td> 5 working days </td>
+                </tr>
+                
+                <tr>
+                    <td> E-Clients </td>
+                    <td> 3 working days </td>
+                </tr>
+                
+                <tr>
+                    <td> Debit Card </td>
+                    <td> 10 working days </td>
+                </tr>
+                
+                <tr>
+                    <td> Business First Loan </td>
+                    <td> 5 working days </td>
+                </tr>
+            </table>
+            
+            <br><div style="font-size:22px"> An acknowledgement email has been sent to you.</div></center>
+    </ion-content>
+    <ion-footer-bar class="bar-assertive" align-title="center">
+    </ion-footer-bar>
+         </ion-side-menu-content>
+ <ion-side-menu side="left">
+    <ion-header-bar class="bar-stable bar-dark">
+      <h1 class="title">OCBC Bank</h1>
+    </ion-header-bar>
+     
+    <ion-content>
+    <ion-list>
+    <ion-item menu-close href="#/appointment">
+    Appointment Scheduler 
+    </ion-item>
+    <ion-item menu-close href="#/acraDetails">
+    Account Opening 
+    </ion-item>
+    <ion-item menu-close href="#/tracker">
+    Progress Tracker
+    </ion-item>
+    </ion-list>
+    </ion-content>
+    <ion-footer-bar class="bar-stable bar-dark">
+      <h1 class="title" ng-click="logout()"><i class="icon ion-person"></i> Logout</h1>
+    </ion-footer-bar>
+  </ion-side-menu>
+</ion-side-menus>

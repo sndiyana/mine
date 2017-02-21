@@ -1,0 +1,524 @@
+/* Empty. Add your own CSS if you like */
+.login-logo {
+    /*position:absolute;*/
+    padding-top:220px;
+    padding-bottom:30px;
+}
+.em,i {
+    font-style:italic;
+}
+.custom-button4 {
+    background-color:#FF5533;
+    color:white;
+    padding-left:60px;
+    padding-right:60px;
+    font-size:24px;
+    padding-top:10px;
+    padding-bottom:10px;
+}
+
+.centered{
+    margin-bottom: 0px;
+    position: absolute;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%)
+}
+
+.middle-block{
+    margin-bottom:20px;
+}
+.row{
+    padding-bottom:20px;
+}
+
+.fab-right{
+    float:right;
+}
+
+.button{
+    margin:5px;
+}
+
+.error-container {
+    margin: 5px 0;
+}
+
+.error-container:last-child {
+    margin: 5px 0 0;
+}
+
+.error {
+    padding: 10px 16px;
+    font-family: "Arial Black", Gadget, sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #555;
+    vertical-align: middle;
+}
+
+.custom-button {
+    background-color:#04B4AE;
+    color:white;
+    padding-left:145px;
+    padding-right:145px;
+    font-size:24px;
+    padding-top:10px;
+    padding-bottom:10px;
+}
+
+.custom-button2 {
+    background-color:#F7819F;
+    color:white;
+    padding-left:55px;
+    padding-right:55px;
+    font-size:24px;
+    padding-top:10px;
+    padding-bottom:10px;
+}
+
+.custom-button3 {
+    background-color:#81BEF7;
+    color:white;
+    padding-left:145px;
+    padding-right:145px;
+    font-size:24px;
+    padding-top:10px;
+    padding-bottom:10px;
+}
+
+.error i {
+    font-size: 24px;
+    color: #B83E2C;  
+    vertical-align: middle;
+}
+
+.adHead {
+    padding:20px;
+    background-color:#DF0101;
+    font-size:18px;
+    text-align:center;
+    color:white;
+
+}
+
+.servicesHeader {
+    background-color:#BE0712;
+    color:white;
+    font-weight:bold;
+    padding-left:145px;
+    padding-right:145px;
+    font-size:20px;
+    text-align:center;
+    padding-top:25px;
+    padding-bottom:25px;
+}
+
+.servicesHeader2 {
+    background-color:#BE0712;
+    color:white;
+    font-weight:bold;
+    padding-left:145px;
+    padding-right:145px;
+    font-size:20px;
+    text-align:center;
+    padding-top:15px;
+    padding-bottom:15px;
+}
+
+.servicesContent {
+    border-style: solid;
+    border-right-width: 1px;
+    border-left-width: 1px;
+    border-color: #ddd;
+    background-color:fff;
+    color:#222222;
+    padding-left:50px;
+    padding-right:50px;
+    /*line-height:40px;*/
+    font-size:16px;
+    text-align:center;
+    padding-top:25px;
+    padding-bottom:25px;
+    font-weight:bold;
+}
+
+.servicesPrice {
+    border-style: solid;
+    border-right-width: 1px;
+    border-color: #ddd;
+    background-color:fff;
+    color:#BE0712;
+    padding-left:50px;
+    padding-right:50px;
+    /*line-height:40px;*/
+    font-size:16px;
+    text-align:center;
+    padding-top:25px;
+    padding-bottom:25px;
+    font-weight:bold;
+}
+
+.servicesAdded {
+    border-style: solid;
+    border-width: 1px;
+    border-color: #ddd;
+    color: #555;
+    background-color:#fff;
+    padding-left:50px;
+    padding-right:50px;
+    /*line-height:40px;*/
+    font-size:18px;
+    text-align:center;
+    padding-top:25px;
+    padding-bottom:25px;
+    font-weight:bold;
+}
+
+.checkbox-assertive {
+    border-style: solid;
+    font-weight:bold;
+    /*line-height:40px;*/
+    font-size:18px;
+    text-align:center;
+    background-color:#eee;
+    font-weight:bold;
+}
+
+.summaryHeader {
+    border-style: solid;
+    border-width: 1px;
+    border-color: #BE0712;
+    background-color:#BE0712;
+    color:white;
+    padding-left:45px;
+    padding-right:45px;
+    font-size:20px;
+    padding-top:25px;
+    padding-bottom:25px;
+}
+
+.summaryContent {
+    border-style: solid;
+    border-width: 1px;
+    border-color: #ddd;
+    background-color:#eee;
+    padding-left:45px;
+    padding-right:45px;
+    font-size:14px;
+    padding-top:25px;
+    padding-bottom:25px;
+    text-align: left;
+}
+
+.summaryPrice {
+    border-style: solid;
+    border-width: 1px;
+    border-color: #ddd;
+    background-color:#fff;
+    padding-left:45px;
+    padding-right:45px;
+    font-size:14px;
+    padding-top:25px;
+    padding-bottom:25px;
+}
+
+
+.last-error-container > .error {
+    padding: 10px 16px 0;
+}
+
+.has-errors {
+    border-bottom: 3px solid #B83E2C;
+}
+
+.no-errors {
+    border-bottom: 3px solid green;
+}
+
+.container {
+    position: relative;
+}
+
+.topleft {
+    position: absolute;
+    top: 53px;
+    left: 105px;
+    background-color: white;
+}
+
+.topleft2 {
+    position: absolute;
+    top: 55px;
+    left: 20px;
+    background-color: white;
+}
+.input-login {
+    padding-left:200px;
+    padding-right:200px;
+}
+
+.icon-login {
+    padding: 3px;
+}
+
+.login-button {
+    padding-top:30px;
+}
+
+.menu-head {
+    padding-top:85px;
+    font-size:24px;
+    font-style:italic;
+}
+
+/* BUSINESS DETAILS CSS */
+
+.fab-left{
+    float:left;
+    display:inline-block;
+}
+
+.error-container {
+    margin: 5px 0;
+}
+
+.error-container:last-child {
+    margin: 5px 0 0;
+}
+
+/* BUSINESS DETAILS */
+.redCard {
+    background-color: #DE121F;
+    color: white;
+    text-align: center;
+}
+
+
+[data-name="shopPic"]{
+    display: block;
+    margin: auto;
+    width: 50%;
+    height: 125px;
+    width:125px;
+}
+
+.section{
+    padding-top:50px;
+}
+
+.containerForBusinessDetails{
+    padding-top:5px;
+    padding-left:20px;
+    padding-right:20px;
+}
+
+.acctTypeHeader p {
+    text-align:center;
+    font-size:28px;
+}
+
+.acctTypeHeader{
+    padding-top:25px;
+    padding-bottom:25px;
+}
+.account{
+    width:48%;
+    display:inline-block;
+    margin-bottom:40px;
+}
+
+.float-left{
+    float:left;
+}
+
+.float-right{
+    float:right;
+}
+
+[data-name="acctTypeImg"]{
+    display: block;
+    margin: auto;
+    width: auto;
+    height: 150px;
+}
+
+.ion-ios-plus{
+    font-size:25px;
+}
+
+.account p{
+    font-size:20px;
+    text-align:center;
+
+}
+
+/*Application Summary CSS*/
+.whiteText{
+    color:white;
+}
+
+.centeredText{
+    text-align:center;
+}
+
+.companyDetailsList{
+    padding:5px;
+}
+
+.companyDetailsList > label{
+    padding:5px;
+}
+.applicationSummaryTable > .header >.col{
+    background-color:#c1c6e6;
+    text-align: center;
+    border:solid 0.5px white;
+}
+
+.applicationSummaryTable > .nonheader >.col{
+    background-color:#e6e6e6;
+    text-align: center;
+    border:solid 0.5px white;
+}
+
+.midnight-bg{
+    background-color:#c1c6e6;
+}
+.midnight-bg2{
+    background-color:#9A9EB8;
+}
+
+.ash-bg{
+   background-color: #e6e6e6;
+}
+
+.ash-bg2{
+   background-color: #CFCFCF;
+}
+
+.applicationSummaryTable > .row{
+    padding:0px;
+}
+
+.item-avatar > img{
+    background-color: white;
+    width:auto;
+}
+
+.textPadding{
+   padding-left:10px;
+}
+
+.yesIcon > img{
+    width:auto;
+    height:30px;
+}
+
+/* Terms and Conditions */
+ion-content div.scroll{
+  height: 100%; 
+}
+
+.webPage{
+  width: 100%;
+  height: 100%;
+}
+
+/* For Cropping */
+.cropArea2 {
+    background: #E4E4E4;
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    overflow: hidden;
+    width:500px;
+    height:600px;
+    margin: 0;
+    padding:0;
+    /*overflow:hidden; */
+    /*width:500px;
+    //height:336px;*/ 
+}
+
+.cropArea {
+    background: #E4E4E4;
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    overflow: hidden;
+    /*width:700px;*/
+    /*height:600px;*/
+    width:700px;
+    height:600px;
+    margin: 0;
+    padding:0;
+    /*overflow:hidden; */
+    /*width:500px;
+    //height:336px;*/ 
+}
+
+.render{
+    float:right;
+    padding-right:20px;
+}
+/*css content for tracker */
+
+@import url(http://fonts.googleapis.com/css?family=Lato:400,900);  /* <-- Just for the demo, Yes I like pretty fonts... */
+
+.square {
+    float:left;
+    position: relative;
+    width: 30%;
+    padding-bottom : 30%; /* = width for a 1:1 aspect ratio */
+    margin:1.66%;
+    background-color:#00A7A6;
+    overflow:hidden;
+}
+
+.content {
+    position:absolute;
+    height:90%; /* = 100% - 2*5% padding */
+    width:90%; /* = 100% - 2*5% padding */
+    padding: 5%;
+    
+}
+.table{
+    display:table;
+    width:100%;
+    height:100%;
+}
+.table-cell{
+    display:table-cell;
+    vertical-align:middle;
+}
+
+/*  For responsive images */
+
+.content .rs{
+    width:auto;
+    height:auto;
+    max-height:90%;
+    max-width:100%;
+}
+/*  For responsive images as background */
+
+.bg{
+    background-position:center center;
+    background-repeat:no-repeat;
+    background-size:cover; /* you change this to "contain" if you don't want the images to be cropped */
+    color:#00A7A6;
+}
+
+.numbers{
+    font-weight:900;
+    font-size:100px;
+    font-family: 'Lato',verdana, sans-serif;
+    color: #fff;
+    text-align:center;
+}
+
+

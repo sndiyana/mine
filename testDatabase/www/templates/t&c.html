@@ -1,0 +1,74 @@
+<ion-side-menus enable-menu-with-back-views="false">
+  <ion-side-menu-content>
+    <ion-nav-bar align-title="center" class="bar-assertive">
+      <ion-nav-back-button>
+      </ion-nav-back-button>
+       
+      <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+        </button>
+        
+        <div class="title">
+        <div class="spacer" style="height: 5px;"></div>
+              <img src="img/ocbc-logo.png" alt="" width="20%" height="auto">
+        </div>
+                  <!--
+          <div align-title="right" class="buttons" style="padding-bottom:20px">
+           <button class="button button-outline button-light" ng-click="logout()"><i class="icon ion-person"></i>Logout</button>
+            </div>-->
+      </ion-nav-buttons>
+    </ion-nav-bar>
+  <ion-content class= 'padding'>
+     <div class="card">
+      <div style="padding-top:80px" align="center">
+          <img src="img/progress/3.PNG" width="60%">
+              </div><br><br>
+    <div style="padding:20px; font-size:16px">
+    I, <b>Aliyah bte Jamil</b> as Director(s) hereby certify that the foregoing resolutions.<br><br>
+    
+    (A) Have been duly entered in the minute book and signed by the Chairman,<br>
+    (B) Are still in force,<br>
+    (C) Do not exceed the objects or powers of the Company or the power of the directors to enter into them. <br><br>
+    
+    We further certify that the present officers of the Company and persons authorized as aforesaid and the job titles respectively held by them and their respective signatures are as shown. <br>
+    </div></div>
+    <div class="card" >
+    <div class="row">
+    <div class="col"><p><u>Aliyah bte Jamil</u></p></br><img src="{{signature}}" ></img><br>
+        <button class="button icon ion-ios-personadd button-assertive" ng-click="sign()"> Sign Here</button></div>
+    </div>
+    </div>
+  </ion-content>
+  
+  <ion-footer-bar class="bar-assertive" align-title="center">
+      <div class="buttons">
+          <button class="button button-outline button-light" ng-click="back2()" > <i class="icon ion-arrow-left-c"></i>Back</button>
+      </div><div class="title">
+      </div>
+      <div align-title="right" class="buttons" style="padding-bottom:20px">
+          <button class="button button-outline button-light" ng-click="nextPTwo()">Next<i class="icon ion-arrow-right-c"></i></button>
+      </div>
+  </ion-footer-bar>
+ </ion-side-menu-content>
+     <ion-side-menu side="left">
+    <ion-header-bar class="bar-stable bar-dark">
+      <h1 class="title">OCBC Bank</h1>
+    </ion-header-bar>
+    <ion-content>
+    <ion-list>
+    <ion-item menu-close href="#/appointment">
+    Appointment Scheduler 
+    </ion-item>
+    <ion-item menu-close href="#/acraDetails">
+    Account Opening 
+    </ion-item>
+    <ion-item menu-close href="#/tracker">
+    Progress Tracker
+    </ion-item>
+    </ion-list>
+    </ion-content>
+    <ion-footer-bar class="bar-stable bar-dark">
+      <h1 class="title" ng-click="logout()"><i class="icon ion-person"></i> Logout</h1>
+    </ion-footer-bar>
+  </ion-side-menu>
+</ion-side-menus>

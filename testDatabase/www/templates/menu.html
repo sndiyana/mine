@@ -1,0 +1,40 @@
+
+<ion-view>
+    <ion-header-bar align-title="center" class="bar-assertive">
+        <div class="title">
+            <img src="img/ocbc-logo.png" alt="" width="30%" height="auto">
+                </div>
+        <div align-title="right" class="buttons" style="padding-bottom:10px">
+            <button class="button button-outline button-light" ng-click="logout()"><i class="icon ion-person"></i>Logout</button>
+        </div>
+    </ion-header-bar>
+    
+    <ion-content>
+            <div class="menu-head" align="center">
+                <b> Welcome, {{name}}. </b>
+            </div>
+            
+            <div style="padding-top:60px" align="center">
+                <img src="img/icons/calendar.png" width="10%" height="auto"><br>
+                <div class="buttons" style="padding-top:10px">
+                    <button class="button custom-button" ng-click="appt()"> <b>Appointment Scheduler</b></button>
+                </div>
+            </div>
+            
+            <div style="padding-top:60px" align="center">
+                <img src="img/icons/handshake.png" width="10%" height="auto"><br>
+                    <div class="buttons" style="padding-top:10px">
+                        <button class="button custom-button2" ng-click="apply()"> <b>Corporate Account Opening Application</b></button>
+                    </div>
+            </div>
+            
+            <div style="padding-top:60px" align="center">
+                <img src="img/icons/graph.png" width="10%" height="auto"><br>
+                    <div class="buttons" style="padding-top:10px">
+                        <button class="button custom-button3" ng-click="track()"> <b>Target Progress Checker</b></button>
+                    </div>
+            </div>
+    </ion-content>
+    <ion-footer-bar class="bar-assertive" align-title="center">
+    </ion-footer-bar>
+</ion-view>

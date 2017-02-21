@@ -1,0 +1,92 @@
+<ion-side-menus enable-menu-with-back-views="false">
+  <ion-side-menu-content>
+    <ion-nav-bar align-title="center" class="bar-assertive">
+      <ion-nav-back-button>
+      </ion-nav-back-button>
+       
+      <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+        </button>
+        
+        <div class="title">
+        <div class="spacer" style="padding-top:5px;height: 5px;"></div>
+              <img src="img/ocbc-logo.png" alt="" width="20%" height="auto">
+        </div>
+                  <!--
+          <div align-title="right" class="buttons" style="padding-bottom:20px">
+           <button class="button button-outline button-light" ng-click="logout()"><i class="icon ion-person"></i>Logout</button>
+            </div>-->
+      </ion-nav-buttons>
+    </ion-nav-bar>
+    
+    <ion-content>
+        <div style="padding-top:80px" align="center">
+            <img src="img/progress/1.png" width="60%">
+                </div>
+        <div style="padding-top:70px;padding-left:100px;padding-right:100px">
+            <div class="adHead"><i class="icon ion-information-circled"></i>
+                <b>Enter your ACRA Business Registration details below.</b>
+            </div>
+        </div>
+        
+        <div style="padding-top:60px;font-size:20px;padding-left:150px;padding-right:150px">
+            <center><b>Business Registration Number:</b></center>
+            <div class="card">
+                <input style="padding-left:10px;font-size:20px" type="text" name="regNum" ng-model="data.regNum" placeholder="e.g 888888" ng-init="data.regNum = '0'">
+            </div>
+        </div>
+        
+        <div style="padding-top:50px;font-size:20px">
+            <center><b>OR</b></center>
+            <hr style="border-top:dotted 4px;color:gray;padding-top:5px;">
+        </div>
+        
+        <div style="padding-top:60px;font-size:20px;padding-left:150px;padding-right:150px">
+            <center><b>Registered Business Name:</b></center>
+            <div class="card">
+                <input style="padding-left:10px;font-size:20px" type="text" name="name" ng-model="data.regName" placeholder="e.g ABC Private Limited" ng-init="data.regName = '0'">
+            </div>
+        </div>
+        
+        <div style="padding-top:60px;font-size:20px;padding-left:150px;padding-right:150px">
+            <center><b>Year of Incorporation:</b></center>
+            <div class="card">
+                <input style="padding-left:10px;font-size:20px" type="text" name="year" ng-model="data.regYear" placeholder="e.g 2008" ng-init="data.regYear = '0'">
+            </div>
+        </div>
+    </ion-content>
+   <ion-footer-bar class="bar-assertive" align-title="center">
+        <div class="buttons">
+         <!--button class="button button-outline button-light" > <i class="icon ion-arrow-left-c"></i>Back</button-->
+         </div><div class="title">
+         </div>
+         <div align-title="right" class="buttons" style="padding-bottom:20px">
+         <button class="button button-outline button-light" ng-click="next()">Next<i class="icon ion-arrow-right-c"></i></button>
+         </div>
+    </ion-footer-bar>
+      
+      </ion-side-menu-content>
+   
+  <ion-side-menu side="left">
+    <ion-header-bar class="bar-stable bar-dark">
+      <h1 class="title">OCBC Bank</h1>
+    </ion-header-bar>
+    <ion-content>
+    <ion-list>
+    <ion-item menu-close href="#/appointment">
+    Appointment Scheduler 
+    </ion-item>
+    <ion-item menu-close href="#/acraDetails">
+    Account Opening 
+    </ion-item>
+    <ion-item menu-close href="#/tracker">
+    Progress Tracker
+    </ion-item>
+    </ion-list>
+    </ion-content>
+    <ion-footer-bar class="bar-stable bar-dark">
+      <h1 class="title" ng-click="logout()"><i class="icon ion-person"></i> Logout</h1>
+    </ion-footer-bar>
+  </ion-side-menu>
+</ion-side-menus>
+

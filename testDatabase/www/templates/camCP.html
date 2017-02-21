@@ -1,0 +1,105 @@
+<ion-side-menus enable-menu-with-back-views="false">
+  <ion-side-menu-content>
+    <ion-nav-bar align-title="center" class="bar-assertive">
+      <ion-nav-back-button>
+      </ion-nav-back-button>
+       
+      <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+        </button>
+        
+        <div class="title">
+        <div class="spacer" style="height: 5px;"></div>
+              <img src="img/ocbc-logo.png" alt="" width="20%" height="auto">
+        </div>
+                  <!--
+          <div align-title="right" class="buttons" style="padding-bottom:20px">
+           <button class="button button-outline button-light" ng-click="logout()"><i class="icon ion-person"></i>Logout</button>
+            </div>-->
+      </ion-nav-buttons>
+    </ion-nav-bar>
+    
+    <ion-content padding="true">
+        
+        <div style="padding-top:70px;padding-left:120px;padding-right:120px">
+            <div class="adHead"><i class="icon ion-information-circled"></i>
+                <b>Please provide your NRIC for verification.</b>
+            </div>
+            <div style="padding-top:30px">
+            <center><img src="img/icons/card.png" width="30%" height="auto"></center>
+            </div>
+        </div>
+        
+        <div align="center" style="padding-top:30px">
+        <table style="padding:20px">
+            <tr>
+                <td>
+                    <div class="buttons" align="center">
+                        <button class="button button-default" ng-click="camera1()" style="background-color:black;color:white;padding:5px;padding-left:20px;padding-right:20px"> <b>Take Front Photo</b></button>
+                    </div>
+                </td>
+                <td style="padding:20px">
+                    <div class="buttons" align="center">
+                    <button class="button button-default" ng-click="camera2()" style="background-color:black;color:white;padding:5px;padding-left:20px;padding-right:20px"> <b>Take Back Photo</b></button>
+                </div>
+                </td>
+            </tr>
+            <tr>
+                <td width="50%"><img alt="img/nric" ng-show="imgURI !== undefined" ng-src="{{imgURI || 'img/nric.jpg'}}" style="text-align:center;padding:5px;padding-left:20px;padding-right:20px"></center></td>
+                <td width="50%"><img alt="img/nric-back" ng-src="{{imgURI2 || 'img/nric-back.jpg'}}" style="text-align: center;padding:5px;padding-left:20px;padding-right:20px" width="90%" height="auto"></center></td>
+            </tr>
+            <!--unhide to check ocr results-->
+            <!--tr>
+                <div class="buttons" align="center">
+                    <button class="button button-default" ng-click="retrieve()" style="background-color:black;color:white;padding:5px;padding-left:20px;padding-right:20px"> <b>retrieve</b></button>
+                </div>
+                <td width="50%"> <div ng-hide="showText()"> text: {{parsedText}}</br>
+                    IC: {{ic}} </br>
+                    Full Name: {{fullName}} </br>
+                    Race: {{race}} </br>
+                    DOB: {{dob}} </br>
+                    Country of Birth: {{cob}} </br>
+                </div></td>
+                <td width="50%"> <div ng-hide="showText2()"> text: {{parsedText}}</br>
+                    IC: {{ic2}} </br>
+                    Full Name: {{fullName2}} </br>
+                    Race: {{race2}} </br>
+                    DOB: {{dob2}} </br>
+                    Country of Birth: {{cob2}} </br>
+                </div></td>
+            </tr-->
+        </table>
+        </div>
+    </ion-content>
+      <ion-footer-bar class="bar-assertive" align-title="center">
+        <div class="buttons">
+            <button class="button button-outline button-light" ng-click="returnCP()"> <i class="icon ion-arrow-left-c"></i>Back</button>
+        </div><div class="title">
+        </div>
+        <div align-title="right" class="buttons" style="padding-bottom:20px">
+            <button class="button button-outline button-light" ng-click="contactP()">Next<i class="icon ion-arrow-right-c"></i></button>
+        </div>
+    </ion-footer-bar>
+       </ion-side-menu-content>
+<ion-side-menu side="left">
+    <ion-header-bar class="bar-stable bar-dark">
+      <h1 class="title">OCBC Bank</h1>
+    </ion-header-bar>
+    <ion-content>
+    <ion-list>
+    <ion-item menu-close href="#/appointment">
+    Appointment Scheduler 
+    </ion-item>
+    <ion-item menu-close href="#/acraDetails">
+    Account Opening 
+    </ion-item>
+    <ion-item menu-close href="#/tracker">
+    Progress Tracker
+    </ion-item>
+    </ion-list>
+    </ion-content>
+    <ion-footer-bar class="bar-stable bar-dark">
+      <h1 class="title" ng-click="logout()"><i class="icon ion-person"></i> Logout</h1>
+    </ion-footer-bar>
+  </ion-side-menu>
+</ion-side-menus>

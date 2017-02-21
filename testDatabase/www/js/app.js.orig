@@ -1,0 +1,2027 @@
+// Ionic Starter App
+
+// angular.module is a global place for creating, registering and retrieving Angular modules
+// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
+// the 2nd parameter is an array of 'requires'
+var app = angular.module('starter', ['ionic', 'ngCordova', 'starter.services', 'jrCrop', 'ngMessages'])
+
+        .run(function ($ionicPlatform) {
+            $ionicPlatform.ready(function () {
+                $ionicPlatform.ready(function () {
+                    if (window.cordova && window.cordova.plugins.Keyboard) {
+                        // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+                        // for form inputs)
+                        cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+
+                        // Don't remove this line unless you know what you are doing. It stops the viewport
+                        // from snapping when text inputs are focused. Ionic handles this internally for
+                        // a much nicer keyboard experience.
+                        cordova.plugins.Keyboard.disableScroll(true);
+                    }
+                    if (window.StatusBar) {
+                        StatusBar.styleDefault();
+                    }
+                });
+            });
+        })
+
+app.controller('menuCtrl', function ($scope, $http, $ionicPopup, $location) {
+    $scope.name = localStorage.getItem("rm");
+    $scope.data = {};
+    $scope.apply = function () {
+        $location.path('/acraDetails');
+    }
+
+    $scope.appt = function () {
+        var alertPopup = $ionicPopup.alert({
+            title: 'Sorry',
+            template: 'This page is currently not available.',
+            buttons: [{text: '<b> OK </b>', type: 'button-assertive'}]
+        })
+    };
+
+    $scope.track = function () {
+        var alertPopup = $ionicPopup.alert({
+            title: 'Sorry',
+            template: 'This page is currently not available.',
+            buttons: [{text: '<b> OK </b>', type: 'button-assertive'}]
+        })
+    };
+    $scope.logout = function () {
+        var alertPopup = $ionicPopup.alert({
+            title: 'Confirm Logout?',
+            buttons: [{text: 'Cancel', type: 'button-light'}, {text: '<b> OK </b>', type: 'button-assertive', onTap: function (e) {
+                        $location.path('/home');
+                    }}]
+        })
+    };
+})
+
+app.controller('HomeCtrl', function ($scope, $location, $location, $ionicPopup, $http) {
+    $scope.data = {};
+    var pwd = "";
+
+    $scope.login = function () {
+        pwd= $scope.data.id + "" + $scope.data.password;
+        var link = 'http://52.74.181.188/swifty/api.php';
+        $http.post(link, {id: $scope.data.id, password: pwd}).then(function (res) {
+            $scope.response = res.data;
+            if ($scope.response.indexOf('Error') < 0) {
+                $scope.name = $scope.response;
+                $scope.user = $scope.data.id;
+                localStorage.setItem("rm", $scope.name);
+                localStorage.setItem("id", $scope.user);
+
+                $location.path('/menu');
+            } else {
+                $scope.data.password = "";
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Login Failed!',
+                    template: $scope.response,
+                    buttons: [{text: '<b> OK </b>', type: 'button-assertive'}]
+                })
+            }
+        });
+    }
+})
+
+app.controller('AcraDetailsCtrl', function ($scope, $state, $location, $http, $ionicPopup, compData, acraEData) {
+    $scope.data = {};
+    var regNum = "";
+    var name = "";
+    var year = "";
+
+    $scope.next = function () {
+        regNum = $scope.data.regNum;
+        name = $scope.data.regName;
+        year = $scope.data.regYear;
+        if (regNum || (name && year)) {
+            $http.post("http://52.74.181.188/swifty/searchAcra.php?id=" + regNum + "&name=" + name + "&year=" + year).success(function (response) {
+                if (response.records[0].status == "error") {
+                    var alertPopup = $ionicPopup.alert({
+                        title: 'Unable to Process ',
+                        template: response.records[0].msg,
+                        buttons: [{text: '<b> OK </b>', type: 'button-assertive', onTap: function (e) {
+                                    $location.path('acraDetails');
+                                }}]
+                    })
+                } else {
+                    compData.updateData(response.records);
+                    var r = response.records[0].regNum;
+
+                    $http.post("http://52.74.181.188/swifty/loadAcraE.php?id=" + r).success(function (response) {
+                        $scope.acraE = response.records;
+                        acraEData.updateData($scope.acraE);
+                        //$state.go('receivedAcraDetails');
+                        $location.path('onlineAcct');
+                    })
+                }
+            })
+        } else {
+            alert("Please fill out either your company's registration no OR your company's name and year of incorporation");
+        }
+
+    };
+
+    $scope.logout = function () {
+        var alertPopup = $ionicPopup.alert({
+            title: 'Confirm Logout?',
+            buttons: [{text: 'Cancel', type: 'button-light'}, {text: '<b> OK </b>', type: 'button-assertive', onTap: function (e) {
+                        $location.path('/home');
+                    }}]
+        })
+    };
+
+    $scope.menu = function () {
+        var alertPopup = $ionicPopup.alert({
+            title: 'Return to Main Menu',
+            buttons: [{text: 'Cancel', type: 'button-light'}, {text: '<b> OK </b>', type: 'button-assertive', onTap: function (e) {
+                        $location.path('/menu');
+                    }}]
+        })
+    };
+
+
+})
+
+        .controller("CameraCtrl", function ($scope, $cordovaCamera, $http, $location, $ionicPopup, compData, ocrService, acraEData) {
+            $scope.directors = acraEData.getData();
+            $scope.imgURI = "";
+            var img = "";
+            var blob = "";
+            var nric = "";
+            var flag = false;
+            var flag2 = false;
+            $scope.names = compData.getData();
+            $scope.acraE = acraEData.getData();
+
+            $scope.returnCP = function () {
+                $location.path('contactPerson');
+            }
+
+            $scope.contactP = function () {
+                $location.path('contactPerson');
+            }
+
+
+
+            $scope.camera1 = function () {
+                alert("Please zoom in after taking photo");
+                var options = {
+                    quality: 100,
+                    destinationType: Camera.DestinationType.DATA_URL,
+                    sourceType: Camera.PictureSourceType.CAMERA,
+                    allowEdit: true,
+                    encodingType: Camera.EncodingType.JPEG,
+                    targetWidth: 250,
+                    targetHeight: 250,
+                    popoverOptions: CameraPopoverOptions,
+                    saveToPhotoAlbum: true
+                };
+
+                $cordovaCamera.getPicture(options).then(function (imageData) {
+                    $scope.imgURI = "data:image/jpeg;base64," + imageData;
+                    img = $scope.imgURI;
+                    var b = atob(img.split(',')[1]);
+                    var m = img.split(',')[0].split(':')[1].split(';')[0];
+                    var a = new ArrayBuffer(b.length);
+                    var i = new Uint8Array(a);
+                    for (var e = 0; e < b.length; e++) {
+                        i[e] = b.charCodeAt(e);
+                    }
+                    blob = new Blob([a], {type: m});
+                    $scope.retrieve();
+                }, function (err) {
+                    // An error occured. Show a message to the user
+                });
+            }
+
+            $scope.camera2 = function () {
+                alert("Please zoom in after taking photo");
+                var options = {
+                    quality: 100,
+                    destinationType: Camera.DestinationType.DATA_URL,
+                    sourceType: Camera.PictureSourceType.CAMERA,
+                    allowEdit: true,
+                    encodingType: Camera.EncodingType.JPEG,
+                    targetWidth: 278,
+                    targetHeight: 278,
+                    popoverOptions: CameraPopoverOptions,
+                    saveToPhotoAlbum: true
+                };
+
+                $cordovaCamera.getPicture(options).then(function (imageData) {
+                    $scope.imgURI2 = "data:image/jpeg;base64," + imageData;
+                    img2 = $scope.imgURI;
+                    $scope.updatePerson();
+
+                }, function (err) {
+                    // An error occured. Show a message to the user
+                });
+            };
+
+            $scope.updatePerson = function () {
+                var link = 'http://52.74.181.188/swifty/upload.php';
+                $http.post(link, {image: $scope.imgURI2, id: $scope.names[0].regNum}).success(function (response) {
+                    $scope.user = response.records;
+                    flag2 = true;                                                                                                                  //$location.path('/businessDetail');
+                }).error(function (error) {
+                    var alertPopup = $ionicPopup.alert({
+                        title: 'ERROR! ',
+                        template: error,
+                        buttons: [{text: '<b> OK </b>', type: 'button-assertive'}]
+                    })
+                });
+            };
+            
+        $scope.getDirector = function(ic){
+            for(i = 0; i < $scope.directors.length; i++){
+                var contact = $scope.directors[i];
+                if(contact.nric === ic){
+                    return contact;
+                }
+            }
+        };
+            $scope.nextP = function () {
+                 //upload NRIC info into db
+                var director = $scope.getDirector("S11111111"); 
+                director.address = "lala land";
+                director.dob= "2012-12-12";
+                console.log("http://52.74.181.188/swifty/saveNricDetails.php?IC=S11111111&address=" + director.address + "&dob=" + director.dob);
+                $http.post("http://52.74.181.188/swifty/saveNricDetails.php?IC=S11111111&address=" + director.address + "&dob=" + director.dob);
+
+                if (flag2) {
+                    $location.path('/businessDetail');
+                } else {
+                    var alertPopup = $ionicPopup.alert({
+                        title: 'ERROR! ',
+                        template: 'Please verify applicant identity and position',
+                        buttons: [{text: '<b> OK </b>', type: 'button-assertive'}]
+                    })
+                }
+            };
+            $scope.upload = function (i) {
+                var link = 'http://52.74.181.188/swifty/addPerson.php';
+                $http.post(link, {image: $scope.imgURI, id: $scope.names[0].regNum, ic: $scope.acraE[i].nric, citizen: $scope.acraE[i].citizen, position: $scope.acraE[i].position, eName: $scope.acraE[i].eName, address: $scope.acraE[i].address}).success(function (response) {
+                    $scope.user = response.records;
+                    $scope.addApplication($scope.acraE[i].nric);
+                    //$location.path('/businessDetail');
+                }).error(function (error) {
+                    var alertPopup = $ionicPopup.alert({
+                        title: 'ERROR! ',
+                        template: error,
+                        buttons: [{text: '<b> OK </b>', type: 'button-assertive'}]
+                    })
+                });
+            };
+
+            $scope.addApplication = function (nric) {
+                var link = 'http://52.74.181.188/swifty/addApp.php';
+                $http.post(link, {id: $scope.names[0].regNum, ic: nric, rm: localStorage.getItem("rm")}).success(function (response) {
+                    $scope.app = response.records;
+                    $location.path('/businessDetail');
+                }).error(function (error) {
+                    var alertPopup = $ionicPopup.alert({
+                        title: 'ERROR! ',
+                        template: error,
+                        buttons: [{text: '<b> OK </b>', type: 'button-assertive'}]
+                    })
+                });
+            };
+
+            $scope.uploadDocument = function () {
+                $scope.names = compData.getData();
+
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Thank you! ',
+                    template: 'Your image is being processed',
+                    buttons: [{text: '<b> OK </b>', type: 'button-assertive'}]
+                })
+
+
+
+
+                var link = 'http://52.74.181.188/swifty/uploadDocument.php';
+                $http.post(link, {image: img, id: $scope.names[0].regNum}).success(function (response) {                    //$http.post("http://52.74.181.188/swifty/upload.php?image="+ img +"&id=" + $scope.names[0].regNum).success(function(response){
+                    $scope.user = response.records;
+                    $location.path('/businessDetails');
+                }).error(function (error) {
+                    var alertPopup = $ionicPopup.alert({
+                        title: 'ERROR! ',
+                        template: error,
+                        buttons: [{text: '<b> OK </b>', type: 'button-assertive'}]
+                    })
+                });
+            };
+
+            $scope.switch = false;
+            $scope.showText = function (show) {
+                $scope.switch = show;
+            };
+
+            $scope.verify = function (nric) {
+                for (var i = 0; i < $scope.acraE.length; i++) {
+                    if ($scope.acraE[i].nric == nric) {
+                        return i;
+                    }
+                }
+                ;
+                return -1;
+            };
+
+            $scope.retrieve = function () {
+
+                ocrService.getResults(blob).then(function (response) {
+                    parsedResults = response.data.ParsedResults[0].ParsedText;//TextOverlay.Lines[0].Words;
+                    //alert(parsedResults);
+                    $scope.parsedText = parsedResults;
+                    var words = parsedResults.split("\r\n");//(/\r|\n/);
+                    for (var i = 0; i < words.length; i++) {
+                        switch (i) {
+                            case 1:
+                                $scope.ic = words[i].trim().split(" ").splice(-1)[0];
+                                nric = $scope.ic;
+                                //alert("ocr:" + nric);
+                                var check = $scope.verify(nric);
+                                //alert("Check:"+ check);
+                                //nric=nric.replaceAll("\s","");
+                                if (check >= 0) {
+                                    $scope.upload(i);
+                                    flag = true;
+                                    var alertPopup = $ionicPopup.alert({
+                                        title: 'Success! ',
+                                        template: 'Please scan the back of the IC',
+                                        buttons: [{text: '<b> OK </b>', type: 'button-assertive'}]
+                                    })
+                                } else {
+                                    var alertPopup = $ionicPopup.alert({
+                                        title: 'ERROR! ',
+                                        template: 'Please check if applicant is authorized to open an account.',
+                                        buttons: [{text: '<b> OK </b>', type: 'button-assertive'}]
+                                    })
+                                }
+                                //alert(nric);
+                                break;
+                        }
+                 /*       //upload NRIC info into db
+                        var director = $scope.getDirector($scope.ic); 
+                        director.address = "lala land";
+                        director.dob= "2012-12-12";
+                        console.log("http://52.74.181.188/swifty/saveNricDetails.php?IC=" + $scope.ic + "&address=" + director.address + "&dob=" + director.dob);
+                        $http.post("http://52.74.181.188/swifty/saveNricDetails.php?IC=" + $scope.ic + "&address=" + director.address + "&dob=" + director.dob);
+                */
+           }
+                    
+                });
+
+                alert("Thank you for your patience. Results will be displayed shortly");
+                //$scope.showText(true);
+            };
+
+            $scope.back = function () {
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Confirm',
+                    template: 'Verify ACRA Business Details?',
+                    buttons: [{text: 'Cancel'}, {text: '<b> OK </b>', type: 'button-assertive', onTap: function (e) {
+                                $location.path('receivedAcraDetails');
+                            }}]
+                });
+            };
+
+            $scope.logout = function () {
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Confirm Logout?',
+                    buttons: [{text: 'Cancel', type: 'button-light'}, {text: '<b> OK </b>', type: 'button-assertive', onTap: function (e) {
+                                $location.path('/home');
+                            }}]
+                });
+            };
+
+            $scope.menu = function () {
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Return to Main Menu',
+                    buttons: [{text: 'Cancel', type: 'button-light'}, {text: '<b> OK </b>', type: 'button-assertive', onTap: function (e) {
+                                $location.path('/menu');
+                            }}]
+                });
+            };
+
+        }
+        )
+
+        .controller('AccountUsersCtrl', function ($scope, compData, $http, $ionicModal, $filter, $location) {
+            $scope.company = compData.getData();
+            // alert($scope.company.data);
+
+            $scope.next = function () {
+                $location.path('/cardDesign');
+            }
+            $scope.results = {};
+            //added
+            $scope.selected = [];
+            $scope.servicesSelected = [];
+            //end
+            $scope.user = {
+                name: '',
+                gender: '',
+                dob: '',
+                email: '',
+                contact_num: '',
+                dobInString: ''
+            };
+            //added
+            $scope.services = {
+                id: '',
+                serviceName: '',
+                price: '',
+                info: ''
+            };
+            //end
+
+            $scope.reset = function () {
+                $scope.user = {
+                    name: '',
+                    gender: '',
+                    dob: '',
+                    email: '',
+                    contact_num: '',
+                    dobInString: ''
+                };
+            };
+
+            $scope.resetServices = function () {
+                $scope.servicesSelected = [];
+            };
+            //added
+            $scope.loadServices = function () {
+                $http.post("http://52.74.181.188/swifty/loadServices.php?reg_num=" + $scope.company.regNum).success(function (response) {
+                    $scope.services = response.records;
+                });
+            };
+
+            $scope.loadServices();
+            //end
+            $scope.loadRecords = function () {
+                $http.post("http://52.74.181.188/swifty/searchBusinessContact.php?regNum=" + $scope.company.regNum).success(function (response) {
+                    $scope.results = response.records;
+                });
+            };
+
+            $scope.loadRecords();
+
+
+            $scope.showRecord = function (index) {
+                if ($scope.activeIndex === index) {
+                    $scope.activeIndex = null;
+                } else {
+                    $scope.activeIndex = index;
+                }
+            };
+
+            $scope.isShowing = function (index) {
+                return  $scope.activeIndex === index;
+            };
+
+            //added
+            $scope.showRecordService = function (idx) {
+                $scope.activeIndexService = idx;
+            };
+            $scope.isShowingService = function (idx) {
+                $scope.isActive = true;
+                return  $scope.isActive === idx;
+            };
+            //end
+
+            $ionicModal.fromTemplateUrl('templates/editAccountUser.html', {
+                scope: $scope
+            })
+                    .then(function (modal) {
+                        $scope.modal1 = modal;
+                    });
+
+            $ionicModal.fromTemplateUrl('templates/addAccountUser.html', {
+                scope: $scope
+            })
+                    .then(function (modal) {
+                        $scope.modal2 = modal;
+                    });
+            //added
+            $ionicModal.fromTemplateUrl('templates/editServices.html', {
+                scope: $scope
+            })
+                    .then(function (modal) {
+                        $scope.modal3 = modal;
+                    });
+            //end
+
+            //added
+            $scope.checkedOrNot = function (id, serviceName, isChecked, index) {
+                console.log("index:" + index + " " + isChecked);
+
+                if (isChecked) {
+                    $scope.selected.push({
+                        'id': id,
+                        'serviceName': serviceName
+                    });
+
+                } else {
+                    var _index = $scope.selected.indexOf(id);
+                    $scope.selected.splice(_index, 1);
+                }
+                $scope.selected = $scope.selected;
+
+                if (isChecked == false) {
+                    $scope.unselected.push({
+                        'id': id,
+                        'serviceName': serviceName
+                    });
+
+                } else {
+                    var _index = $scope.unselected.indexOf(id);
+                    $scope.unselected.splice(_index, 1);
+
+                }
+                $scope.unselected = $scope.unselected;
+                $scope.reset();
+            };
+
+            $scope.openModalServices = function (index) {
+
+                // console.log("lalalala " + $scope.selected);
+                // console.log($scope.selected.length);
+                $scope.resetServices();
+                //  console.log($scope.selected.length);
+                for (var i = 0; i < $scope.selected.length; i++) {
+                    $scope.servicesSelected.push($scope.selected[i]);
+                }
+
+                //   console.log("Services Selected " + $scope.servicesSelected);
+
+                $scope.modal3.show();
+
+
+            };
+            //end
+            $scope.openModal = function (index) {
+                //console.log("example " +index);
+                $scope.userSelected = $scope.results[index];
+                //console.log($scope.userSelected);
+                if (index == null) {
+                    $scope.modal2.show();
+                } else {
+                    $scope.modal1.show();
+                }
+            };
+            //added
+            $scope.editServiceRecord = function (data) {
+                //console.log("data "+data);
+                // console.log("length "+data.length);
+                var $arr = "";
+                for (var i = 0; i < data.length; i++) {
+                    $arr += data[i].id + ",";
+                    //    console.log(data[i].id);
+                }
+                // console.log("arr " + $arr)
+
+                //   console.log("http://localhost/fyp/confirmServices.php?reg_num=" + $scope.company.regNum + "&data=" + $arr);
+                $http.post("http://52.74.181.188/swifty/confirmServices.php?reg_num=" + $scope.company.regNum + "&data=" + $arr).success(function () {
+                    //$scope.PostDataResponse = $data;
+                    $scope.loadServices();
+
+                });
+                $scope.resetServices();
+                $scope.modal3.hide();
+
+                $scope.services = response.records;
+
+            };
+            //end
+            $scope.editRecord = function (u) {
+                u.dobInString = $filter('date')(u.dob, "yyyy-MM-dd");
+                /*console.log("http://localhost/fyp/updateBusinessUser.php?name=" + u.name + "&contact=" + u.contact_num
+                 +"&email=" + u.email + "&dob=" + u.dobInString + "&gender=" + u.gender + "&contactNum=" + $scope.userSelected.contact_num); */
+                $http.post("http://52.74.181.188/swifty/updateBusinessContact.php?name=" + u.name + "&contact=" + u.contact_num
+                        + "&email=" + u.email + "&dob=" + u.dobInString + "&gender=" + u.gender + "&contactNum=" + $scope.userSelected.contact_num).success(function () {
+                    $scope.loadRecords();
+                    $scope.reset();
+                    console.log("user: " + $scope.user.name);
+                });
+                $scope.modal1.hide();
+            };
+
+
+            $scope.deleteRecord = function (index) {
+                $http.post("http://52.74.181.188/swifty/deleteBusinessContact.php?contactNum=" + $scope.results[index].contact_num).success(function () {
+                    $scope.loadRecords();
+                });
+            };
+
+            $scope.addRecord = function (u) {
+                if (!(u.name === "") && !(u.gender === "") && !(u.dob === "") && !(u.email === "") && !(u.contact_num === "")) {
+                    u.dobInString = $filter('date')(u.dob, "yyyy-MM-dd");
+                    //      console.log("http://localhost/fyp/addBusinessUser.php?name=" + u.name + "&contactNum=" + u.contact_num
+                    //               + "&email=" + u.email + "&regNum=" + $scope.company.regNum + "&dob=" + u.dobInString + "&gender=" + u.gender);
+                    $http.post("http://52.74.181.188/swifty/addBusinessContact.php?name=" + u.name + "&contactNum=" + u.contact_num
+                            + "&email=" + u.email + "&regNum=" + $scope.company.regNum + "&dob=" + u.dobInString + "&gender=" + u.gender).success(function () {
+                        $scope.loadRecords();
+                    });
+                    $scope.reset();
+                    $scope.modal2.hide();
+                }
+                ;
+            };
+
+            $ionicModal.fromTemplateUrl('templates/signature.html', {
+                scope: $scope
+            }).then(function (modal) {
+                $scope.modal = modal;
+            });
+
+
+
+            var signaturePad = "";
+            $scope.sign = function () {
+                $scope.modal.show();
+                var canvas = document.getElementById('signatureCanvas');
+                console.log(canvas);
+                signaturePad = new SignaturePad(canvas);
+            }
+            $scope.sign.hide = function () {
+                $scope.modal.hide();
+            }
+            $scope.clearCanvas = function () {
+                signaturePad.clear();
+            }
+            $scope.saveCanvas = function () {
+                var sigImg = signaturePad.toDataURL();
+                $scope.signature = sigImg;
+                $http.post("http://52.74.181.188/swifty/signature.php", {signature: $scope.signature});
+                $scope.modal.hide();
+            };
+
+
+            $scope.logout = function () {
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Confirm Logout?',
+                    buttons: [{text: 'Cancel', type: 'button-light'}, {text: '<b> OK </b>', type: 'button-assertive', onTap: function (e) {
+                                $location.path('/home');
+                            }}]
+                });
+            };
+
+            $scope.menu = function () {
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Return to Main Menu',
+                    buttons: [{text: 'Cancel', type: 'button-light'}, {text: '<b> OK </b>', type: 'button-assertive', onTap: function (e) {
+                                $location.path('/menu');
+                            }}]
+                });
+            };
+
+
+
+
+
+        })
+
+        .service('contactList', function () {
+            return {
+                form: {},
+                getForm: function () {
+                    return this.form;
+                },
+                updateForm: function (form) {
+                    this.form = form;
+                }
+            }
+        })
+
+        .service('businessData', function () {
+            return {
+                form: {},
+                getForm: function () {
+                    return this.form;
+                },
+                updateForm: function (form) {
+                    this.form = form;
+                }
+            }
+        })
+
+        .service('compData', function () {
+            return {
+                data: {},
+                getData: function () {
+                    return this.data;
+                },
+                updateData: function (data) {
+                    this.data = data;
+                }
+            }
+        })
+
+        .service('acraEData', function () {
+            return {
+                data: {},
+                getData: function () {
+                    return this.data;
+                },
+                updateData: function (data) {
+                    this.data = data;
+                }
+            }
+        })
+
+        .service('acctTypeData', function () {
+            return {
+                data: {},
+                getData: function () {
+                    return this.data;
+                },
+                updateData: function (data) {
+                    this.data = data;
+                }
+            }
+        })
+
+        .service('priceData', function () {
+            return {
+                data: {},
+                getData: function () {
+                    return this.data;
+                },
+                updateData: function (data) {
+                    this.data = data;
+                }
+            }
+        })
+
+        .service('addedServicesData', function () {
+            return {
+                data: {},
+                getData: function () {
+                    return this.data;
+                },
+                updateData: function (data) {
+                    this.data = data;
+                }
+            }
+        })
+
+        .service('addedCardData', function () {
+            return {
+                data: {},
+                getData: function () {
+                    return this.data;
+                },
+                updateData: function (data) {
+                    this.data = data;
+                }
+            }
+        })
+
+        .controller('ServicesCtrl', function ($scope, compData, addedServicesData, $http, $ionicModal, $filter, $location) {
+            $scope.company = compData.getData();
+
+
+            $scope.results = {};
+            //added
+            $scope.selected = [];
+            $scope.servicesSelected = [];
+            $scope.services = {
+                id: '',
+                serviceName: '',
+                price: '',
+                info: ''
+            };
+
+            $scope.resetServices = function () {
+                $scope.servicesSelected = [];
+            };
+
+            $scope.loadServices = function () {
+                $http.post("http://52.74.181.188/swifty/loadServices.php?reg_num=" + $scope.company.data).success(function (response) {
+                    $scope.services = response.records;
+                    $scope.selected = addedServicesData.getData();
+                });
+            };
+            $scope.$on('$ionicView.enter', function () {
+                // code to run each time view is entered
+                $scope.loadServices();
+            });
+
+            //$scope.loadServices();
+            $scope.editServiceRecord = function (data) {
+                $scope.data = $filter('filter')(data, {checked: true})
+                var $arr = "";
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].checked) {
+                        $arr += data[i].id + ",";
+                    }
+                }
+                //   console.log("http://localhost/fyp/confirmServices.php?reg_num=" + $scope.company.regNum + "&data=" + $arr);
+                $http.post("http://52.74.181.188/swifty/confirmServices.php?reg_num=" + $scope.company.regNum + "&data=" + $arr).success(function () {
+                    //$scope.PostDataResponse = $data;
+                    $scope.loadServices();
+                    $location.path('/acctSummary');
+
+                });
+                //$scope.resetServices();
+                //$scope.modal3.hide();
+
+                //$scope.services = response.records;
+
+            };
+
+            $scope.back2 = function () {
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Confirm',
+                    template: 'Select a new account?',
+                    buttons: [{text: 'Cancel'}, {text: '<b> OK </b>', type: 'button-assertive', onTap: function (e) {
+                                $location.path('/selectAcct');
+                            }}]
+                });
+            };
+
+            $scope.logout = function () {
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Confirm Logout?',
+                    buttons: [{text: 'Cancel', type: 'button-light'}, {text: '<b> OK </b>', type: 'button-assertive', onTap: function (e) {
+                                $location.path('/home');
+                            }}]
+                });
+            };
+
+            $scope.menu = function () {
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Return to Main Menu',
+                    buttons: [{text: 'Cancel', type: 'button-light'}, {text: '<b> OK </b>', type: 'button-assertive', onTap: function (e) {
+                                $location.path('/menu');
+                            }}]
+                });
+            };
+
+        })
+
+        .controller('AccountSummaryCtrl', function ($scope, compData, addedServicesData, acctTypeData, priceData, $http, $ionicModal, $filter, $location, $ionicPopup) {
+            $scope.company = compData.getData();
+            $scope.totalPrice = 0;
+            $scope.acctType = "";
+
+            $scope.retrieveAcctType = function () {
+                $scope.acctType = acctTypeData.getData();
+            };
+            $scope.retrieveAcctType();
+            $scope.loadSavedServices = {
+                id: '',
+                serviceName: '',
+                price: '',
+            };
+
+
+            $scope.loadSelectedServices = function () {
+                $http.post("http://52.74.181.188/swifty/loadSelectedServices.php?reg_num=" + $scope.company.regNum).success(function (response) {
+                    $scope.loadSavedServices = response.records;
+
+                    for (var i = 0; i < $scope.loadSavedServices.length; i++) {
+                        $scope.totalPrice += parseInt($scope.loadSavedServices[i].price);
+                    }
+                    priceData.updateData($scope.totalPrice);
+                    addedServicesData.updateData($scope.loadSavedServices);
+                });
+            };
+
+            $scope.loadSelectedServices();
+
+            $scope.editAcct = function () {
+                $location.path('/selectAcct');
+            };
+
+            // edit below path (To: chaw su/susan)
+            $scope.next = function () {
+                $location.path('/contactPerson');
+                //$location.path('/cardDesign');
+            };
+
+            $scope.back = function () {
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Confirm',
+                    template: 'Edit services?',
+                    buttons: [{text: 'Cancel'}, {text: '<b> OK </b>', type: 'button-assertive', onTap: function (e) {
+                                $location.path('/editServices');
+                            }}]
+                });
+            };
+
+            $scope.logout = function () {
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Confirm Logout?',
+                    buttons: [{text: 'Cancel', type: 'button-light'}, {text: '<b> OK </b>', type: 'button-assertive', onTap: function (e) {
+                                $location.path('/home');
+                            }}]
+                });
+            };
+
+            $scope.menu = function () {
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Return to Main Menu',
+                    buttons: [{text: 'Cancel', type: 'button-light'}, {text: '<b> OK </b>', type: 'button-assertive', onTap: function (e) {
+                                $location.path('/menu');
+                            }}]
+                });
+            };
+
+
+
+            $scope.removeServiceRecord = function (id) {
+                $http.post("http://52.74.181.188/swifty/removeServices.php?reg_num=" + $scope.company.regNum + "&id=" + id).success(function () {
+                    $scope.loadSelectedServices();
+                    $location.path('/acctSummary');
+                });
+            };
+
+        }
+        )
+
+
+        .service('compData', function () {
+            return {
+                data: {},
+                getData: function () {
+                    return this.data;
+                },
+                updateData: function (data) {
+                    this.data = data;
+                }
+            }
+        })
+
+        .controller('detailCtrl', function ($scope, compData, acctTypeData, $http, $location, $ionicPopup, businessData) {
+            $scope.acra = compData.getData()[0];
+            var regNum = $scope.acra.regNum;
+            if (!($scope.acra == null)) {
+                $scope.acra.phone = parseInt($scope.acra.phone); //to convert phone into str
+            }
+            $scope.business = {
+                name: $scope.acra.name,
+                address: $scope.acra.address,
+                alt_address: $scope.acra.address,
+                phone: $scope.acra.phone,
+                activity: $scope.acra.activity,
+                company_type: $scope.acra.company_type,
+                declaration: '',
+                fatca: ''
+            };
+
+            $scope.declaration = "active"; //set radio button default
+            $scope.toAcctType = function (form) {
+                if (form.$valid) {
+                    console.log(JSON.stringify($scope.business));
+                    $http.post("http://52.74.181.188/swifty/addSupplierDetails.php?regNum=" + regNum + "&supplierCountry=" + $scope.business.supplierCountry + "&supplierPayment=" + $scope.business.supplierPayment + "&supplierPaymentNum=" + $scope.business.supplierPaymentNum + "&supplierPaymentPeriod=" + $scope.business.supplierPeriod + "&supplierTransactionSize=" + $scope.business.supplierTransactionSize + "&supplierNotes=" + $scope.business.supplierNotes).success(function () {
+                    })
+                            .error(function () {
+                                alert("Error updating database! Please contact admin):");
+                            });
+                    $http.post("http://52.74.181.188/swifty/addCustomerDetails.php?regNum=" + regNum + "&customerPayment=" + $scope.business.customerPayment + "&customerPaymentNum=" + $scope.business.customerPaymentNum + "&customerPaymentPeriod=" + $scope.business.customerPeriod + "&customerTransactionSize=" + $scope.business.customerTransactionSize + "&customerNotes=" + $scope.business.customerNotes).success(function () {
+                    })
+                            .error(function () {
+                                alert("Error updating database!  Please contact admin):");
+                            });
+                    $http.post("http://52.74.181.188/swifty/addBusinessDetails.php?regNum=" + regNum + "&name=" + $scope.business.name + "&fatca=" + $scope.business.declaration + "&address=" + $scope.business.address + "&alt_address=" + $scope.business.alt_address + "&phone=" + $scope.business.phone + "&activity=" + $scope.business.activity + "&companyType=" + $scope.business.companyType).success(function () {
+                    })
+                            .error(function () {
+                                alert("Error updating database!  Please contact admin):");
+                            });
+                    $location.path('/selectAcct');
+                } else {
+                    alert("Please fill up all the required fields!")
+                }
+            };
+
+            $scope.toEditServices = function () {
+                if (!($scope.acctChosen == "")) {
+                    $location.path('/editServices');
+                } else {
+                    alert("Please choose an account type!")
+                }
+            };
+
+            $scope.back1 = function () {
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Confirm',
+                    template: 'Back to Scanning your NRIC?',
+                    buttons: [{text: 'Cancel'}, {text: '<b> OK </b>', type: 'button-assertive', onTap: function (e) {
+                                $location.path('/camera');
+                            }}]
+                })
+            };
+
+            $scope.back2 = function () {
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Confirm',
+                    template: 'Return to business detail',
+                    buttons: [{text: 'Cancel'}, {text: '<b> OK </b>', type: 'button-assertive', onTap: function (e) {
+                                $location.path('businessDetail');
+                            }}]
+                })
+            };
+
+
+            $scope.data = {};
+            $scope.acctChosen = "";
+
+            $scope.chooseAcct = function (acct) {
+                if (!($scope.acctChosen == "") & !(acct === $scope.acctChosen)) {
+                    var element = document.getElementById($scope.acctChosen);
+                    if (!(element == null)) {
+                        element.style.boxShadow = "none";
+                    }
+                }
+                $scope.acctChosen = acct;
+                if (acct === "BFA") {
+                    $scope.acctName = "Business First Account";
+                } else {
+                    $scope.acctName = "Business Entrepreneur Account";
+                }
+                acctTypeData.updateData($scope.acctName);
+                document.getElementById(acct).style.boxShadow = "0px 0px 50px #de121f"; //to make the stuff glow
+                console.log("accountChosen : " + $scope.acctName);
+
+            };
+
+            $scope.businessDetails = function () {
+                $http.post("http://52.74.181.188/swifty/businessDetail.php?sCountry=" + $scope.data.sCountry + "&sPayment=" + $scope.data.sPayment + "&sNum=" + $scope.data.sNumPayment + "&sTransaction=" + $scope.data.sTransaction + "&cCountry=" + $scope.data.cCountry + "&cPayment=" + $scope.data.cPayment + "&cNum=" + $scope.data.cNumPayment + "&cTransaction=" + $scope.data.cTransaction + "&id=" + $scope.names[0].regNum).success(function (response) {
+                    $scope.user = response.records;
+                    $location.path('/accountUsers');
+                });
+            };
+
+            $scope.logout = function () {
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Confirm Logout?',
+                    buttons: [{text: 'Cancel', type: 'button-light'}, {text: '<b> OK </b>', type: 'button-assertive', onTap: function (e) {
+                                $location.path('/home');
+                            }}]
+                });
+            };
+
+            $scope.menu = function () {
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Return to Main Menu',
+                    buttons: [{text: 'Cancel', type: 'button-light'}, {text: '<b> OK </b>', type: 'button-assertive', onTap: function (e) {
+                                $location.path('/menu');
+                            }}]
+                });
+            };
+
+        })
+
+        .controller('ReceivedAcraDetailsCtrl', function ($scope, $http, $location, $ionicPopup, acraEData, compData, $ionicListDelegate) {
+
+            //$scope.names = formData.getData();
+
+            //collapse and expand
+            $scope.show1 = false;
+            $scope.show2 = false;
+            $scope.show3 = false;
+
+            $scope.click1 = function ($event) {
+                $event.stopPropagation();
+                $scope.show1 = !$scope.show1;
+                $scope.show2 = false;
+                $scope.show3 = false;
+                $ionicListDelegate.closeOptionButtons();
+            }
+
+            $scope.click2 = function ($event) {
+                $event.stopPropagation();
+                $scope.show2 = !$scope.show2;
+                $scope.show1 = false;
+                $scope.show3 = false;
+                $ionicListDelegate.closeOptionButtons();
+            }
+
+            $scope.click3 = function ($event) {
+                $event.stopPropagation();
+                $scope.show3 = !$scope.show3;
+                $scope.show2 = false;
+                $scope.show1 = false;
+                $ionicListDelegate.closeOptionButtons();
+            }
+
+            $scope.hideAll = function () {
+                $scope.show1 = false;
+                $ionicListDelegate.closeOptionButtons();
+            };
+
+            $scope.names = compData.getData();
+            //$scope.directors = {};
+            $scope.loadAcraE = function () {
+                $scope.directors = acraEData.getData();
+            };
+
+            $scope.loadAcraE();
+
+            //console.log("2. " + JSON.stringify(acraEData.getData()));
+            //console.log("3. " + JSON.stringify(compData.getData()));
+            $scope.directors = acraEData.getData();
+            console.log("2. " + JSON.stringify(acraEData.getData()));
+
+            $scope.isMailingAdd = {
+                name: 'yes'
+            };
+            $scope.address = {};
+
+            $scope.showPopup = function () {
+                $scope.address = {}
+                // An elaborate, custom popup
+                var myPopup = $ionicPopup.show({
+                    templateUrl: "templates/mailingAddressForm.html",
+                    title: 'Please enter your preferred mailing address',
+                    scope: $scope,
+                    buttons: [
+                        {text: 'Cancel'},
+                        {text: '<b>Save</b>',
+                            type: 'button-assertive submit',
+                            onTap: function (e) {
+                                if (!$scope.address.add || !$scope.address.postal) {
+                                    e.preventDefault();
+                                } else {
+                                    return $scope.address.add + " Singapore " + $scope.address.postal;
+                                }
+                            }
+                        },
+                    ]
+                });
+                myPopup.then(function (res) {
+                    $http.post("http://52.74.181.188/swifty/updateAddress.php?regNum=" + $scope.names[0].regNum + "&address=" + res);
+                });
+            };
+
+            $scope.back = function () {
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Confirm',
+                    template: 'Process a new business?',
+                    buttons: [{text: 'Cancel'}, {text: '<b> OK </b>', type: 'button-assertive', onTap: function (e) {
+                                $location.path('acraDetails');
+                            }}]
+                });
+            };
+
+            $scope.next = function () {
+                //transferring from acra db to our db
+                $http.post("http://52.74.181.188/swifty/setBusinessDetails.php?regNum=" + $scope.names[0].regNum + "&activity=" + $scope.names[0].activity + "&name=" + $scope.names[0].name + "&phone=" + $scope.names[0].phone + "&fax=" + $scope.names[0].fax + "&address=" + $scope.names[0].address + "&company_type=" + $scope.names[0].company_type);
+                for (i = 0; i < $scope.directors.length; i++) {
+                    $http.post("http://52.74.181.188/swifty/setBusinessContact.php?regNum=" + $scope.names[0].regNum + "&IC=" + $scope.directors[i].nric + "&name=" + $scope.directors[i].eName + "&position=" + $scope.directors[i].position + "&citizenship=" + $scope.directors[i].citizen);
+                }
+                $location.path('camera');
+            };
+
+            $scope.logout = function () {
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Confirm Logout?',
+                    buttons: [{text: 'Cancel', type: 'button-light'}, {text: '<b> OK </b>', type: 'button-assertive', onTap: function (e) {
+                                $location.path('/home');
+                            }}]
+                });
+            };
+
+            $scope.menu = function () {
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Return to Main Menu',
+                    buttons: [{text: 'Cancel', type: 'button-light'}, {text: '<b> OK </b>', type: 'button-assertive', onTap: function (e) {
+                                $location.path('/menu');
+                            }}]
+                });
+            };
+
+
+        })
+
+        .controller('ApplicationSummaryCtrl', function ($scope, $location, compData, acctTypeData, $ionicModal, $ionicPopup,$http) {
+            $scope.acct = acctTypeData.getData();
+            $scope.names = compData.getData();
+            $scope.contactPerson = {
+                reg_num: '',
+                name: '',
+                contact_num: '',
+                email: '',
+                gender: ''
+            };
+
+            $ionicModal.fromTemplateUrl('templates/signature.html', {
+                scope: $scope,
+                //animation: 'slide-in-up',
+            }).then(function (modal) {
+                $scope.modal = modal;
+            });
+
+
+            $scope.sign = function () {
+                $scope.modal.show();
+            };
+
+            var signaturePad = "";
+            $scope.sign = function () {
+                $scope.modal.show();
+                var canvas = document.getElementById('signatureCanvas');
+                console.log(canvas);
+                signaturePad = new SignaturePad(canvas);
+            }
+            $scope.sign.hide = function () {
+                $scope.modal.hide();
+            }
+            $scope.clearCanvas = function () {
+                signaturePad.clear();
+            }
+            $scope.saveCanvas = function () {
+                var sigImg = signaturePad.toDataURL();
+                $scope.signature = sigImg;
+                //$http.post("http://52.74.181.188/swifty/signature.php", {signature: $scope.signature});
+                $scope.modal.hide();
+            };
+
+            $scope.logout = function () {
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Confirm Logout?',
+                    buttons: [{text: 'Cancel', type: 'button-light'}, {text: '<b> OK </b>', type: 'button-assertive', onTap: function (e) {
+                                $location.path('/home');
+                            }}]
+                });
+            };
+
+            $scope.menu = function () {
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Return to Main Menu',
+                    buttons: [{text: 'Cancel', type: 'button-light'}, {text: '<b> OK </b>', type: 'button-assertive', onTap: function (e) {
+                                $location.path('/menu');
+                            }}]
+                });
+            };
+            
+            $scope.searchBusinessContact = function () {
+                $http.post("http://52.74.181.188/swifty/searchBusinessContact.php?reg_num=" + $scope.names[0].regNum).success(function (response) {
+                    $scope.contactPerson = response.records;
+                    $scope.sendSms($scope.contactPerson);
+                });
+
+            };
+
+            $scope.sendSms = function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    alert(data[i].contact_num);
+                    $http.post("http://52.74.181.188/swifty/sendSms.php?mobile=65" + data[i].contact_num).success(function () {
+                    });
+                }
+            };
+
+            $scope.nextP = function () {
+                $location.path('/termsAndConditions');
+            };
+            $scope.backOne = function () {
+                $location.path('cardDesign');
+            };
+
+            $scope.nextPTwo = function () {
+                // activate SMS function unhide only the first line
+                //$scope.searchBusinessContact();
+                //$scope.sendSms();
+                $location.path('completeAcct');
+            };
+
+            $scope.back2 = function () {
+                $location.path('/applicationSummary');
+            };
+
+
+        })
+
+        .controller('contactPersonCtrl', function ($scope, $ionicPopup, $http, $ionicModal, $filter, $location, $window, compData, contactList, acraEData) {
+            $scope.names = compData.getData();
+            var counter = 0;
+
+            $scope.acraE = acraEData.getData();
+
+            $scope.results = {};
+            $scope.contactPersons = [{
+            }];
+
+            $scope.reset = function () {
+                $scope.contactPerson = {
+                    IC: '',
+                    reg_num: '',
+                    name: '',
+                    position: '',
+                    citizenship: '',
+                    dob: '',
+                    contact_num: '',
+                    email: '',
+                    gender: ''
+                };
+            };
+
+            $scope.resetServices = function () {
+                $scope.servicesSelected = [];
+            };
+            $scope.loadContactPerson = function () {
+                $http.post("http://52.74.181.188/swifty/loadContactPerson.php?reg_num=" + $scope.names[0].regNum).success(function (response) {
+                    $scope.contactPersons = response.records;
+                    console.log("testing123: " + JSON.stringify($scope.contactPersons));
+                });
+
+            };
+
+            $scope.loadContactPerson();
+
+            $ionicModal.fromTemplateUrl('templates/editContactPerson.html', {
+                scope: $scope,
+            }).then(function (modal) {
+                $scope.modal1 = modal;
+            });
+            $ionicModal.fromTemplateUrl('templates/addContactPerson.html', {
+                scope: $scope,
+            }).then(function (modal) {
+                $scope.modal2 = modal;
+            });
+            $scope.openModal = function (index) {
+                console.log("example " + index);
+                $scope.contactSelected = $scope.contactPersons[index];
+                if (index == null) {
+                    $scope.addContact = {};
+                    $scope.modal2.show();
+                } else {
+                    $scope.modal1.show();
+                }
+            };
+
+            $scope.closeModal = function () {
+                $scope.modal1.hide();
+            };
+
+            $scope.openModal2 = function () {
+                $scope.modal2.show();
+            };
+
+            $scope.closeModal2 = function () {
+                $scope.modal2.hide();
+            };
+            //Cleanup the modal when we're done with it!
+            $scope.$on('$destroy', function () {
+                $scope.modal.remove();
+            });
+
+            // Execute action on hide modal
+            $scope.$on('modal.hidden', function () {
+                // Execute action
+            });
+
+            // Execute action on remove modal
+            $scope.$on('modal.removed', function () {
+                // Execute action
+            });
+
+            // Image upload
+            $scope.showPopup = function () {
+                $scope.data = {}
+
+
+                var myPopup = $ionicPopup.show({
+                    template: '<input type = "text" ng-model = "data.model">',
+                    title: 'Pop up to choose image',
+                    subTitle: '',
+                    scope: $scope,
+                    buttons: [
+                        {text: 'Cancel'}, {
+                            text: '<b>Save</b>',
+                            type: 'button-positive',
+                            onTap: function (e) {
+
+                                if (!$scope.data.model) {
+                                    //don't allow the user to close unless he enters model...
+                                    e.preventDefault();
+                                } else {
+                                    return $scope.data.model;
+                                }
+                            }
+                        }
+                    ]
+                });
+
+                myPopup.then(function (res) {
+                    console.log('Tapped!', res);
+                });
+            };
+        /*$scope.showAddContactModal = function () {
+                $scope.modal2.show();
+        };*/
+
+            $scope.deleteConfirm = function (ic) {
+
+                var confirmPopup = $ionicPopup.confirm({
+                    title: 'Delete contact person???',
+                    template: 'Deleting will lost all the data of this contact.',
+                    buttons: [
+                        {text: 'Cancel'},
+                        {text: 'YES',
+                            type: 'button-positive',
+                            onTap: function (e) {
+                                console.log("hello");
+                                $http.post("http://52.74.181.188/swifty/deleteContactPerson.php?ic=" + ic).success(function () {
+                                    $scope.loadContactPerson();
+                                    $scope.reset();
+
+                                })
+
+                            }}
+                    ]
+                });
+            };
+
+            $scope.addContactRecord = function (form) {
+                /*if (!(contact.name === "")
+                        && !(contact.ic === "")
+                        && !(contact.gender === "")
+                        && !(contact.dob === "")
+                        && !(contact.email === "")
+                        && !(contact.contact_no === "")
+                        && !(contact.citizenship === "")
+                        && !(contact.position === "")) {
+                    contact.dob = $filter('date')(contact.dob, "yyyy-MM-dd");
+
+                    if (contact.ic == "S9335483D" || contact.ic == "S9335483O" || contact.ic == "s9335483D") {
+                        $http.post("http://52.74.181.188/swifty/addContactPerson.php?name=" + contact.name + "&ic=" + contact.ic
+                                + "&contact_no=" + contact.contact_no
+                                + "&email=" + contact.email + "&reg_num=" + $scope.names[0].regNum + "&dob=" + contact.dob + "&gender=" + contact.gender
+                                + "&citizenship=" + contact.citizenship + "&position=" + contact.position).success(function () {
+                            //$scope.reset();
+                            $scope.loadContactPerson();
+                            $scope.reset();
+                            // alert();
+                        });
+                    } else {
+
+                        alert("User is not authorized");
+                    }
+
+                    $scope.modal2.hide();
+                }*/
+                if(form.$valid){
+                   $scope.addContact.dobReformat = $filter('date')($scope.addContact.dob, "yyyy-MM-dd"); 
+                //$scope.addContact.dob | "yyyy-mm-dd";
+                    $scope.addContact.address = $scope.addContact.aress + " Singapore " + $scope.addContact.address.postal;
+                    console.log("http://52.74.181.188/swifty/addContactPerson.php?name=" + $scope.addContact.name + "&ic=" + $scope.addContact.ic
+                                + "&contact_no=" + $scope.addContact.contact_no
+                                + "&email=" + $scope.addContact.email + "&reg_num=" + $scope.names[0].regNum + "&dob=" + $scope.addContact.dobReformat + "&gender=" + $scope.addContact.gender
+                                + "&citizenship=" + $scope.addContact.citizenship + "&position=" + $scope.addContact.position);
+                    $http.post("http://52.74.181.188/swifty/addContactPerson.php?name=" + $scope.addContact.name + "&ic=" + $scope.addContact.ic
+                                + "&contact_no=" + $scope.addContact.contact_no
+                                + "&email=" + $scope.addContact.email + "&reg_num=" + $scope.names[0].regNum + "&dob=" + $scope.addContact.dobReformat + "&gender=" + $scope.addContact.gender
+                                + "&citizenship=" + $scope.addContact.citizenship + "&position=" + $scope.addContact.position).success(function () {
+                            //$scope.reset();
+                            $scope.loadContactPerson();
+                            $scope.modal2.hide();
+                    });
+                }
+            };
+
+
+            $scope.getContactPerson = function (ic) {
+                for (i = 0; i < $scope.contactPersons.length; i++) {
+                    var contact = $scope.contactPersons[i];
+                    if (contact.IC === ic) {
+                        return contact;
+                    }
+                }
+            };
+
+            $scope.contactSwitch = function (ic, isChecked) {
+                console.log("ic: " + ic);
+                var contactSelected = $scope.getContactPerson(ic);
+                console.log("contact: " + JSON.stringify(contactSelected));
+                contactSelected.isContact = isChecked;
+                console.log("user details: " + JSON.stringify(contactSelected));
+            };
+
+            $scope.signatorySwitch = function (ic, isChecked) {
+                var contactSelected = $scope.getContactPerson(ic);
+                contactSelected.isSignatory = isChecked;
+                console.log("user details: " + JSON.stringify(contactSelected));
+            };
+
+            $scope.saveContactSignatory = function () {
+                for (i = 0; i < $scope.contactPersons.length; i++) {
+                    var contact = $scope.contactPersons[i];
+                    console.log("http://52.74.181.188/swifty/saveContactSignatory.php?IC=" + contact.IC + "&isSignatory=" + contact.isSignatory + "&isContact=" + contact.isContact);
+                    $http.post("http://52.74.181.188/swifty/saveContactSignatory.php?IC=" + contact.IC + "&isSignatory=" + contact.isSignatory + "&isContact=" + contact.isContact).success(function () {
+                    });
+                }
+            };
+
+            $scope.editRecord = function (contact, ic) {
+                if (ic == "S9412721A") {
+                    localStorage.setItem("toCall", contact.contact_no);
+                    localStorage.setItem("toEmail", contact.email);
+                } else {
+                    localStorage.setItem("toCall2", contact.contact_no);
+                    localStorage.setItem("toEmail2", contact.email);
+                }
+                // alert(ic);
+
+                $http.post("http://52.74.181.188/swifty/editContactPerson.php?contact_no=" + contact.contact_no
+                        + "&email=" + contact.email + "&IC=" + ic).success(function () {
+
+                    $scope.loadContactPerson();
+                    $scope.reset;
+
+
+                });
+
+                $scope.modal1.hide();
+            };
+
+            //check if ID is uploaded or not and show message
+
+            /*           $scope.showMessage=function (index) {
+             }
+             */
+
+            $scope.showMessage = false;
+            //alert($scope.results);
+
+
+            $scope.back = function () {
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Confirm',
+                    template: 'View Summary?',
+                    buttons: [{text: 'Cancel'}, {text: '<b> OK </b>', type: 'button-assertive', onTap: function (e) {
+                                $location.path('acctSummary');
+                            }}]
+                });
+            };
+
+            $scope.next = function () {
+                $scope.saveContactSignatory();
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Signing Condition',
+                    buttons: [{text: '<b>Singly</b>', type: 'button-assertive', onTap: function (e) {
+                                localStorage.setItem("signC", "Singly");
+                                $location.path('onlineAcct');
+                            }}, {text: '<b> Joint </b>', type: 'button-assertive', onTap: function (e) {
+                                localStorage.setItem("signC", "Jointly");
+                                $location.path('onlineAcct');
+                            }}]
+                });
+
+
+            };
+
+            $scope.logout = function () {
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Confirm Logout?',
+                    buttons: [{text: 'Cancel', type: 'button-light'}, {text: '<b> OK </b>', type: 'button-assertive', onTap: function (e) {
+                                $location.path('/home');
+                            }}]
+                });
+            };
+
+            $scope.menu = function () {
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Return to Main Menu',
+                    buttons: [{text: 'Cancel', type: 'button-light'}, {text: '<b> OK </b>', type: 'button-assertive', onTap: function (e) {
+                                $location.path('/menu');
+                            }}]
+                });
+            };
+
+
+        })
+
+        .controller('onlineCtrl', function ($scope, $ionicPopup, $http, $ionicModal, $filter, $location, compData) {
+            $scope.names = compData.getData();
+                    
+            $scope.cName = $scope.names[0].name;
+            $scope.cName = $scope.cName + "SG";
+                
+            $scope.username = "";
+            $scope.updateUsename = false;
+
+            $scope.editCU = function () {
+                if($scope.updateUsename) {
+                    $scope.updateUsename = false;
+                } else {
+                    $scope.updateUsename = true;
+                }
+            };
+
+            $scope.loadContactPerson = function () {
+                $http.post("http://52.74.181.188/swifty/loadContactPerson.php?reg_num=" + $scope.names[0].regNum).success(function (response) {
+                    $scope.contactPerson = response.records;
+                });
+
+            };
+
+            $scope.loadContactPerson();
+            
+            $scope.updateName = function () {
+                    alert($scope.username);
+                $http.post("http://52.74.181.188/swifty/updateUsername.php?id=" + $scope.names[0].regNum + "&username=" + $scope.username).success(function (response) {
+                    $scope.contactPerson = response.records;
+                    $scope.cName = $scope.username;
+                });
+            };
+
+            $scope.backCP = function () {
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Confirm',
+                    template: 'View Summary?',
+                    buttons: [{text: 'Cancel'}, {text: '<b> OK </b>', type: 'button-assertive', onTap: function (e) {
+                                $location.path('contactPerson');
+                            }}]
+                });
+            };
+
+            $scope.next = function () {
+                $location.path('cardDesign');
+e
+            };
+
+            $scope.logout = function () {
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Confirm Logout?',
+                    buttons: [{text: 'Cancel', type: 'button-light'}, {text: '<b> OK </b>', type: 'button-assertive', onTap: function (e) {
+                                $location.path('/home');
+                            }}]
+                });
+            };
+
+            $scope.menu = function () {
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Return to Main Menu',
+                    buttons: [{text: 'Cancel', type: 'button-light'}, {text: '<b> OK </b>', type: 'button-assertive', onTap: function (e) {
+                                $location.path('/menu');
+                            }}]
+                });
+            };
+
+
+        })
+
+        .controller('ImagePickerController', function ($scope, $cordovaCamera, $jrCrop, $http, $ionicPopup, compData, $ionicModal, addedCardData, $location) {
+
+            $scope.showFirstCard = false;
+            $scope.showSecondCard = false;
+            $scope.showThirdCard = false;
+            $scope.showSampleCard = true;
+
+            $scope.firstCard = function () {
+                $scope.showFirstCard = true;
+                $scope.showSecondCard = false;
+                $scope.showThirdCard = false;
+                $scope.showSampleCard = false;
+            };
+            $scope.secondCard = function () {
+                $scope.showSecondCard = true;
+                $scope.showFirstCard = false;
+                $scope.showThirdCard = false;
+                $scope.showSampleCard = false;
+            };
+            $scope.thirdCard = function () {
+                $scope.showThirdCard = true;
+                $scope.showFirstCard = false;
+                $scope.showSecondCard = false;
+                $scope.showSampleCard = false;
+            };
+
+            $scope.names = compData.getData();
+            // alert($scope.names[0].regNum);
+
+            $scope.back = function () {
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Edit online Account?',
+                    buttons: [{text: 'Cancel', type: 'button-light'}, {text: '<b> OK </b>', type: 'button-assertive', onTap: function (e) {
+                                $location.path('/onlineAcct');
+                            }}]
+                });
+            };
+
+            $scope.logout = function () {
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Confirm Logout?',
+                    buttons: [{text: 'Cancel', type: 'button-light'}, {text: '<b> OK </b>', type: 'button-assertive', onTap: function (e) {
+                                $location.path('/home');
+                            }}]
+                });
+            };
+
+            $scope.menu = function () {
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Return to Main Menu',
+                    buttons: [{text: 'Cancel', type: 'button-light'}, {text: '<b> OK </b>', type: 'button-assertive', onTap: function (e) {
+                                $location.path('/menu');
+                            }}]
+                });
+            };
+
+            $scope.contact = {
+                IC: '',
+                reg_num: '',
+                name: '',
+                position: '',
+                citizenship: '',
+                dob: '',
+                contact_num: '',
+                email: '',
+                gender: ''
+            };
+
+            $scope.loadContact = function () {
+                $http.post("http://52.74.181.188/swifty/loadContactPerson.php?id=" + $scope.names[0].regNum).success(function (response) {
+                    $scope.contact = response.records;
+                    // alert($scope.contact);
+                });
+            };
+
+            $scope.loadContact();
+
+            $scope.address = {};
+
+            $scope.setLimit = function (data) {
+                $scope.card = {}
+                // An elaborate, custom popup
+
+                var myPopup = $ionicPopup.show({
+                    templateUrl: "templates/setLimit.html",
+                    title: 'Set Limit',
+                    scope: $scope,
+                    buttons: [
+                        {text: 'Cancel'},
+                        {text: '<b>Save</b>',
+                            type: 'button-assertive submit',
+                            onTap: function (e) {
+
+                            }
+                        },
+                    ]
+                });
+                myPopup.then(function (res) {
+                    //$http.post("http://52.74.181.188/swifty/updatecard.php?regNum=" + $scope.names[0].regNum + "&name=" + $scope.card.name + "&n=" + $scope.card.net + "%s=" + scope.card.sign + "&ic=" + data);
+                });
+                addedCardData.updateData(res);
+            };
+
+
+
+            $scope.getImage = function () {
+                // $ionicPlatform.ready(function () {
+
+                // Image picker will load images according to these settings
+                var options = {
+                    quality: 100,
+                    destinationType: Camera.DestinationType.DATA_URL,
+                    sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+                    //sourceType:srcType,
+                    allowEdit: true,
+                    encodingType: Camera.EncodingType.JPEG,
+                    //targetWidth: 250,
+                    //targetHeight: 250,
+                    popoverOptions: CameraPopoverOptions,
+                    saveToPhotoAlbum: false
+                };
+
+                $cordovaCamera.getPicture(options).then(function (imageData) {
+                    $scope.imgURI = "data:image/jpeg;base64," + imageData;
+                    $jrCrop.crop({
+                        url: $scope.imgURI,
+                        width: 410,
+                        height: 100
+                    }).then(function (canvas) {
+                        // success!
+                        //var image = canvas.toDataURL();
+                        $scope.image = canvas.toDataURL();
+                    }, function () {
+                        // User canceled or couldn't load image.
+                    });
+
+                }, function (err) {
+                    // An error occured. Show a message to the user
+                });
+                //});
+            };
+
+            $scope.takeImage = function () {
+                var options = {
+                    quality: 100,
+                    destinationType: Camera.DestinationType.DATA_URL,
+                    sourceType: Camera.PictureSourceType.CAMERA,
+                    allowEdit: true,
+                    encodingType: Camera.EncodingType.JPEG,
+                    targetWidth: 400,
+                    targetHeight: 400,
+                    popoverOptions: CameraPopoverOptions,
+                    saveToPhotoAlbum: false
+                };
+                $cordovaCamera.getPicture(options).then(function (imageData) {
+                    $scope.imgURI = "data:image/jpeg;base64," + imageData;
+                    $jrCrop.crop({
+                        url: $scope.imgURI,
+                        width: 488,
+                        height: 103
+                    }).then(function (canvas) {
+                        // success!
+                        //var image = canvas.toDataURL();
+                        $scope.image = canvas.toDataURL();
+                    }, function () {
+                        // User canceled or couldn't load image.
+                    });
+
+                }, function (err) {
+                    // An error occured. Show a message to the user
+                });
+                //});
+            };
+
+            $scope.uploadLogo = function (choice) {
+                $location.path('/applicationSummary');
+                //alert($scope.image);
+                //ProgressIndicator.showSimple(n);
+                if (choice.value === "customlogo") {
+                    var link = 'http://52.74.181.188/swifty/uploadLogo.php';
+                    //$http.post(link, {image: $scope.image, id: $scope.names[0].regNum}).success(function (response) {
+                    $http.post(link, {image: $scope.image, id: $scope.names[0].regNum}).success(function (response) {
+                        $scope.user = response.records;
+                        //ProgressIndicator.hide();
+                        //$location.path('/applicationSummary');
+                        //alert("YAY");
+                    }).error(function (error) {
+                        var alertPopup = $ionicPopup.alert({
+                            title: 'ERROR! ',
+                            template: error,
+                            buttons: [{text: '<b> OK </b>', type: 'button-assertive'}]
+                        })
+                    });
+                } else if (choice.value === "customname") {
+                    var link = 'http://52.74.181.188/swifty/uploadLogo.php';
+                    //$http.post(link, {image: $scope.image, id: $scope.names[0].regNum}).success(function (response) {
+                    $http.post(link, {image: choice.custom, id: $scope.names[0].regNum}).success(function (response) {
+                        $scope.user = response.records;
+                        //ProgressIndicator.hide();
+                        //$location.path('/actSetting');
+                        // $location.path('/applicationSummary');
+                    }).error(function (error) {
+                        var alertPopup = $ionicPopup.alert({
+                            title: 'ERROR! ',
+                            template: error,
+                            buttons: [{text: '<b> OK </b>', type: 'button-assertive'}]
+                        })
+                    });
+                } else {
+                    var link = 'http://52.74.181.188/swifty/uploadLogo.php';
+                    //$http.post(link, {image: $scope.image, id: $scope.names[0].regNum}).success(function (response) {
+                    $http.post(link, {image: "ocbclogo", id: $scope.names[0].regNum}).success(function (response) {
+                        $scope.user = response.records;
+                        //ProgressIndicator.hide();
+                        //$location.path('/actSetting');
+                        //$location.path('/applicationSummary');
+                    }).error(function (error) {
+                        var alertPopup = $ionicPopup.alert({
+                            title: 'ERROR! ',
+                            template: error,
+                            buttons: [{text: '<b> OK </b>', type: 'button-assertive'}]
+                        })
+                    });
+                }
+            };
+
+        }
+        )
+
+        .config(function ($stateProvider, $urlRouterProvider) {
+
+            $stateProvider
+
+                    .state('acraDetails', {
+                        url: "/acraDetails",
+                        templateUrl: "templates/acraDetails.html",
+                        controller: "AcraDetailsCtrl"
+                    })
+
+                    .state('completeAcct', {
+                        url: "/completeAcct",
+                        templateUrl: "templates/completeAcct.html",
+                        controller: "ApplicationSummaryCtrl"
+                    })
+
+
+                    .state('receivedAcraDetails', {
+                        url: "/receivedAcraDetails",
+                        templateUrl: "templates/receivedAcraDetails.html",
+                        controller: "ReceivedAcraDetailsCtrl"
+                    })
+
+                    .state('camera', {
+                        cache: false,
+                        url: "/camera",
+                        templateUrl: "templates/camera.html",
+                        controller: "CameraCtrl"
+                    })
+
+                    .state('cameraCP', {
+                        cache: false,
+                        url: "/cameraCP",
+                        templateUrl: "templates/camCP.html",
+                        controller: "CameraCtrl"
+                    })
+
+                    .state('businessDetail', {
+                        url: "/businessDetail",
+                        templateUrl: "templates/businessDetails.html",
+                        controller: "detailCtrl"
+                    })
+
+                    .state('selectAcctType', {
+                        url: "/selectAcct",
+                        templateUrl: "templates/selectAcctType.html", //"templates/selectAcctType.html"
+                        controller: "detailCtrl"
+                    })
+
+                    .state('uploadDocument', {
+                        cache: false,
+                        url: "/uploadDocument",
+                        templateUrl: "templates/uploadDocument.html",
+                        controller: "CameraCtrl"
+                    })
+
+                    .state('accountSetting', {
+                        url: "/actSetting",
+                        templateUrl: "templates/accountSetting.html",
+                        controller: "detailCtrl"
+                    })
+
+                    .state('home', {
+                        url: "/home",
+                        templateUrl: "templates/home.html",
+                        controller: "HomeCtrl"
+                    })
+
+                    .state('cardDesign', {
+                        url: "/cardDesign",
+                        templateUrl: "templates/cardDesign.html",
+                        controller: "ImagePickerController"
+                    })
+
+                    .state('applicationSummary', {
+                        url: "/applicationSummary",
+                        templateUrl: "templates/applicationSummary.html",
+                        controller: "ApplicationSummaryCtrl"
+                    })
+
+
+                    .state('termsAndConditions', {
+                        url: "/termsAndConditions",
+                        templateUrl: "templates/t&c.html",
+                        controller: "ApplicationSummaryCtrl"
+                    })
+
+                    .state('menu', {
+                        url: "/menu",
+                        templateUrl: "templates/menu.html",
+                        controller: "menuCtrl"
+                    })
+
+                    .state('editServices', {
+                        url: "/editServices",
+                        templateUrl: "templates/editServices.html",
+                        controller: "ServicesCtrl"
+                    })
+
+                    .state('acctSummary', {
+                        url: "/acctSummary",
+                        templateUrl: "templates/acctSummary.html",
+                        controller: "AccountSummaryCtrl"
+                    })
+
+                    .state('contactPerson', {
+                        //cache: false,
+                        url: "/contactPerson",
+                        templateUrl: "templates/contactPerson.html",
+                        controller: "contactPersonCtrl"
+                    })
+
+                    .state('onlineAcct', {
+                        //cache: false,
+                        url: "/onlineAcct",
+                        templateUrl: "templates/onlineAcct.html",
+                        controller: "onlineCtrl"
+                    })
+
+                    .state('signature', {
+                        cache: false,
+                        url: "/signature",
+                        templateUrl: "templates/signature.html",
+                        controller: "AccountUsersCtrl"
+                    });
+
+            $urlRouterProvider.otherwise("/home");
+
+        })
+

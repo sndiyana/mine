@@ -1,0 +1,24 @@
+<form name="addressForm" novalidate="" ng-submit="submitForm(addressForm)"> 
+        
+          <div class="list">
+          
+            <label class="item item-input" ng-class="{ 'has-errors' : addressForm.add.$invalid, 'no-errors' : addressForm.add.$valid}">
+              <span class="input-label">Address</span>
+              <input type="text" name="add" ng-model="address.add" required>
+            </label>
+            
+            <div class="error-container" ng-show=" addressForm.add.$error " ng-messages=" addressForm.add.$error">
+              <div ng-messages-include="templates/error-list.html"></div>
+            </div>
+              
+          <label class="item item-input" ng-class="{ 'has-errors' : addressForm.postal.$invalid, 'no-errors' : addressForm.postal.$valid}">
+              <span class="input-label">Postal</span>
+              <input type="number" name="postal" ng-model="address.postal" ng-minlength = "6" required>
+            </label>
+            
+            <div class="error-container last-error-container" ng-show=" addressForm.postal.$error " ng-messages=" addressForm.postal.$error">
+              <div ng-messages-include="templates/error-list.html"></div>
+            </div>         
+
+          </div> 
+</form>    

@@ -1,0 +1,128 @@
+<ion-side-menus enable-menu-with-back-views="false">
+  <ion-side-menu-content>
+    <ion-nav-bar align-title="center" class="bar-assertive">
+      <ion-nav-back-button>
+      </ion-nav-back-button>
+       
+      <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+        </button>
+        
+        <div class="title">
+        <div class="spacer" style="height: 5px;"></div>
+              <img src="img/ocbc-logo.png" alt="" width="20%" height="auto">
+        </div>
+                  <!--
+          <div align-title="right" class="buttons" style="padding-bottom:20px">
+           <button class="button button-outline button-light" ng-click="logout()"><i class="icon ion-person"></i>Logout</button>
+            </div>-->
+      </ion-nav-buttons>
+    </ion-nav-bar>
+    
+    <ion-content>
+        <div style="padding-top:80px" align="center">
+            <img src="img/progress/3.PNG" width="60%">
+                </div>
+        <div style="padding-top:35px" align="center">
+            <img src="img/icons/summary.png" width="20%" height="auto"><br>
+                <div class="adHead"><i class="icon ion-information-circled"></i>
+                    <b>Business Bank Account Opening</b>
+                </div>
+            <!--h3>Business Bank Account Opening<br></h3>
+            <h1>Summary</h1></br-->
+        </div>
+        <div style="padding-top:60px;padding-left:150px;padding-right:150px;">
+            <div class="summaryHeader" align="center">Business Account</div>
+            <table width=100%>
+                <tr>
+                    <td><div class="summaryContent" ng-model="retrieveAcctType()">{{acctType}}
+                        <i class="icon ion-edit" ng-click="editAcct()"></i></div>
+                            </td>
+                    <td><div class="summaryPrice">Waived</div></td>
+                </tr>
+            </table>
+        </div>
+
+        <div style="padding-top:60px;padding-left:150px;padding-right:150px;">
+            <div class="summaryHeader" align="center">Business Services</div>
+            <table width="100%">
+                <tr ng-repeat="y in loadSavedServices">
+                    <td class="summaryContent">{{y.serviceName}}
+						<div style="float:right; font-size:30px">
+                        <i class="icon ion-trash-a" ng-click="removeServiceRecord(y.id)"></i>
+						</div>
+                    </td>
+                    <td class="summaryPrice">${{y.price}}/month
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <br>
+        <div style="padding-top:60px;padding-left:150px;padding-right:150px;">
+            <div class="summaryHeader" align="center">Complimentary</div>
+            <table width="100%">
+                <tr>
+                    <td>
+                        <div class="summaryContent">
+                            Business Debit Card
+                        </div>
+                    </td>
+                    <td>
+                        <div class="summaryPrice">Waived</div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <br>
+        <div style="padding-top:60px;padding-left:150px;padding-right:150px;">
+            <table width="100%">
+                <tr>
+                    <td style="background-color: transparent">
+                    </td>
+                    <td>
+                        <div class="summaryHeader" align="center">Total</div>
+                    </td>
+                    <td>
+                        <div class="summaryPrice">${{totalPrice}}/month</div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+
+
+        <!-- Service Name: {{y.id}} </br> -->
+
+        <!--<button ng-click="openModalServices()">Add Services</button>!-->
+
+    </ion-content>
+   <ion-footer-bar class="bar-assertive" align-title="center">
+        <div class="buttons">
+            <button class="button button-outline button-light" ng-click="back()" > <i class="icon ion-arrow-left-c"></i>Back</button>
+        </div><div class="title">
+        </div>
+        <div align-title="right" class="buttons" style="padding-bottom:20px">
+            <button class="button button-outline button-light" ng-click="next()">Next<i class="icon ion-arrow-right-c"></i></button>
+        </div>
+    </ion-footer-bar>
+</ion-view>
+
+
+<!--
+<ion-modal-view>
+        <ion-header-bar class="bar bar-header bar-positive">
+          <h1 class="title">Services Chosen</h1>
+          <button class="button button-clear button-primary" ng-click="modal3.hide(servicesSelected)">Cancel</button>
+        </ion-header-bar>
+        <ion-content class="padding">
+          <ul class="list" ng-repeat="y in servicesSelected">
+                  </li>
+            <label class="item">
+              <span class="input-label">{{y.serviceName}}</span>             
+            </label>
+           </li>          
+          </ul>
+                    <button class="button button-full button-positive" ng-click="editServiceRecord(servicesSelected)">Confirm</button>
+        </ion-content>
+</ion-modal-view>
+!-->

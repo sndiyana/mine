@@ -1,0 +1,29 @@
+ <ion-modal-view>
+     
+        <ion-header-bar class="bar bar-header bar-assertive">
+          <h1 class="title">Please enter card details</h1>
+          <button class="button button-clear button-primary" ng-click="closeModal()">Cancel</button>
+        </ion-header-bar>
+        
+        <ion-content class="padding">
+          <div class="list">
+            <label class="item item-input">
+              <span class="input-label">Name(to Appear on Card)</span>
+              <input ng-model="contactSelected.name" placeholder= "{{contactSelected.name}}" type="text">
+            </label>
+
+						 <label class="item item-input">
+              <span class="input-label">Set Netts Limit</span>
+              <input ng-model="contactSelected.netts" type="number">
+            </label>
+						
+						 <label class="item item-input">
+              <span class="input-label">Set Sign Limit</span>
+              <input ng-model="contactSelected.sign" type="number">
+            </label>
+             
+            <button class="button button-full button-assertive" ng-click="editRecord(contactSelected,contactSelected.IC)">Save</button>
+          </div>
+        </ion-content>
+        
+</ion-modal-view>

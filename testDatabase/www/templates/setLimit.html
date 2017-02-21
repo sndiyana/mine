@@ -1,0 +1,21 @@
+<form name="cardLimitForm" novalidate="" ng-submit="submitForm(cardLimitForm)">
+        
+          <div class="list">
+          
+            <label class="item item-input">
+               
+              <input type="text" name="add" ng-model="card.name" ng-maxlength ="25" ng-minlength="5" placeholder="Name" required>
+            </label>
+
+            <label class="item item-input">
+                
+                <input type="text" name="add" ng-model="card.net" ng-maxlength ="25" ng-minlength="5" placeholder="Netts Limit"required>
+            </label>
+            
+            <label class="item item-input">
+        
+              <input type="number" name="postal" ng-model="card.sign" placeholder="Sign Limit" required>
+            </label>
+
+          </div> 
+</form>    

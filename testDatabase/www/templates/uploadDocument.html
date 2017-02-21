@@ -1,0 +1,65 @@
+
+<ion-view ng-app="starter">
+     <script src="js/app.js"></script>
+    <ion-header-bar class="bar-assertive">
+        <b>  <h1 class="title">Attach documents </h1> <b>
+
+                </ion-header-bar>
+                  
+                <ion-content ng-controller="CameraCtrl" padding="true">
+                     
+
+
+                    Please specify a file which explains your company information:<br>
+                    <br/>
+          
+                <form  action="http://52.74.181.188/swifty/attachDocument.php" method="post" enctype="multipart/form-data">
+                        <table width="350" border="0" cellpadding="1" cellspacing="1" class="box">
+                            <tr> 
+                                <td width="246">
+                                   
+                                        <input type="hidden" name="MAX_FILE_SIZE" value="2000000">
+                                     
+                                    
+                                        <input name="userfile" type="file" id="userfile"> 
+                                        
+                                        </td>
+                                      
+                                        <td width="80"><input type="submit" name="upload" class="box" id="upload" value=" Upload "></td>
+                                        
+                                    </tr>
+                        </table>
+                    </form>
+
+
+                    <br/>
+                    <br/>
+
+                    <h3> OR    </h3>
+
+
+                    <br/>
+                    <br/>
+
+                    <button class="button assertive button-full " ng-click="takePhoto()">
+                        Take Photo of document
+                    </button>
+                    <button class="button assertive button-full " ng-click="choosePhoto()">
+                        Choose Photo from gallery of document
+                    </button>
+
+                    <!-- <div ng-show='imgURI'>
+                       {{imgURI}} 
+                     </div>-->
+                    <br/>
+                    <br/>
+
+                    <button class="button button-calm fab-right" ng-click="uploadDocument()">Next</button>
+                    <button class="button button-calm fab-right ">Save & Exit</button>
+
+
+
+                    <center>
+                        <img alt="image" ng-show="imgURI !== undefined" ng-src="{{imgURI}}" style="text-align: center"></center>
+                </ion-content>
+                </ion-view>
